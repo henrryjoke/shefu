@@ -1,7 +1,7 @@
 ---
 name: shefu
 description: |
-  Interpret hexagrams using the Zheng Yi Xin Fa (正易心法) structural analysis method. Reads qi dynamics from yin-yang line positions, derives trigram virtues (健顺动入陷丽止说), applies opposition analysis (反对), and validates through change-and-return (变复) self-verification. Specializes in object divination (射覆), hexagram interpretation for career/health/relationships, and structural I Ching analysis. Does NOT make fortune-telling verdicts — unfolds possibilities from structure.
+  Interpret hexagrams using the Zheng Yi Xin Fa (正易心法) structural analysis method. Also supports casting hexagrams via Plum Blossom (梅花易数) and Six-Yao with Najia (六爻纳甲) methods before analysis. Reads qi dynamics from yin-yang line positions, derives trigram virtues (健顺动入陷丽止说), applies opposition analysis (反对), and validates through change-and-return (变复) self-verification. Specializes in object divination (射覆), hexagram interpretation for career/health/relationships, and structural I Ching analysis. Does NOT make fortune-telling verdicts — unfolds possibilities from structure.
 triggers:
   - 射覆
   - 算一算
@@ -14,11 +14,18 @@ triggers:
   - 正易心法
   - 问卦
   - 卜问
+  - 起卦
+  - 起一卦
+  - 摇卦
+  - 梅花易数
+  - 梅花起卦
+  - 六爻
+  - 六爻起卦
   - hexagram
   - divination
   - shefu
   - iching
-version: 0.1.0
+version: 0.2.0
 homepage: "https://github.com/henrryjoke/shefu"
 ---
 
@@ -58,22 +65,91 @@ homepage: "https://github.com/henrryjoke/shefu"
 
 ---
 
-## 2. 分析工作流
+## 2. 起卦入口（先起卦，再解卦）
 
-### 输入格式
+### 何时起卦
 
-使用前准备：
-- 专注于被覆盖隐藏的物体，内心生问"对方藏的是什么？""这是什么？"
-- **暂不提供起卦功能**，需自行提供卦名和月、日干支。
+用户说「起卦」「起一卦」「占一卦」「问卦」「帮我摇卦」「梅花起卦」「六爻起卦」「占卜」等，但没有提供现成卦名 → 先起卦。
+
+用户直接给卦名（如「乾为天卦，变卦天风姤，问事业」）→ 跳过起卦，直接进入 Layer 1。
+
+### 起卦方法选择
 
 ```
-卦名：[本卦名]（用户自行提供）
+用户请求起卦
+  │
+  ├── 用户明确提「梅花」「梅易」「数字」「时间」「物象」→ 梅花易数起卦
+  └── 其余所有情况 → 默认六爻纳甲摇卦
+```
+
+**优先级：六爻纳甲（摇卦）> 梅花易数**。除非用户明确指定梅花方式，否则默认引导用户亲手摇铜钱。
+
+### 起卦前意识聚焦（必须执行）
+
+**无论哪种起卦方式，Agent 必须先执行此步骤后才开始起卦：**
+
+```
+Agent：「先停一下。请在心里清晰地想一遍——
+       你想要知道的事情是什么？
+       把它凝练成一句话，比如『我这次跳槽去XX公司是否合适』。
+       想清楚了之后告诉我，我再帮你起卦。」
+```
+
+等待用户确认后，再进入起卦流程。
+
+### 梅花易数起卦
+
+```bash
+# 时间起卦（默认）：无需用户提供参数
+python scripts/qigua_meihua.py time
+
+# 数字起卦：用户提供 2-3 个数字
+python scripts/qigua_meihua.py number <数1> <数2> [数3]
+```
+
+**Agent 行为**：运行脚本 → 展示结果（本卦/互卦/变卦/动爻/体用）→ 确认 → 进入 Layer 1。
+
+### 六爻纳甲起卦
+
+六爻摇卦必须由用户本人操作。分两种模式：
+
+#### 模式 A：Agent 逐爻引导手摇
+
+```
+Agent："请找三枚硬币。第 1 爻（初爻）：抛出三枚，告诉我正反面。"
+用户："正正反"（1背）
+Agent："单背 → 少阳 ━━━（静爻）。第 2 爻（二爻）：请抛。"
+...依次到第 6 爻...
+```
+
+每爻抛出后 Agent 立即反馈结果。六爻收集完毕后运行：
+```bash
+python scripts/qigua_liuyao.py --lines "正正反,反反反,..."
+```
+
+#### 模式 B：用户一次性提供六爻
+
+用户如果已自己摇完，可一次性描述六爻结果。
+
+**铜钱规则**：
+
+| 铜钱组合 | 结果 | 符号 | 发动？ |
+|---------|------|------|-------|
+| 三字（全正, 0反） | 老阴 | - - × | 发动，变阳爻 |
+| 单背（1反2正） | 少阳 | ━━━ | 静爻 |
+| 双背（2反1正） | 少阴 | - - | 静爻 |
+| 三背（全反, 3反） | 老阳 | ━━━ ○ | 发动，变阴爻 |
+
+**Agent 行为**：收集六爻 → 运行脚本 → 表格展示装卦结果（纳甲/六亲/六神/世应/动变）→ 确认 → 进入 Layer 1。
+
+### 射覆模式
+
+射覆时用户需提供卦名和月日干支，跳过起卦直接分析：
+
+```
+卦名：[本卦名]
 月干支：[如 癸巳]
 日干支：[如 戊戌]
-变卦：[如有变动，给出变卦名]
-动爻：[如有，给出爻位 1-6]
-事项：[自然语言描述所问之物]
-```
 
 ### Layer 0：信息确认
 
