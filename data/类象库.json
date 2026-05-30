@@ -5,11 +5,9 @@
     "source": "射覆映射手册.md v0.3 + 五轮实战验证",
     "total_validations": 5,
     "last_validation_round": 5,
-    "description": "结构化八卦物性映射知识库。每条映射带 confidence（0-1）和 source。供约束求解引擎读取，每轮射覆复盘后由 update_kb.py 自动更新。"
+    "description": "结构化信号→特征映射知识库。每条映射带 confidence（0-1）和 source。供特征画像引擎读取，每轮射覆复盘后由 update_kb.py 自动更新。物品名称降级为参考（references），核心价值在于特征画像本身。"
   },
-
   "trigrams": {
-
     "乾": {
       "gua_id": "qian",
       "symbol": "☰",
@@ -17,59 +15,171 @@
       "五行": "金",
       "dimensions": {
         "material": [
-          {"value": "金属/合金/不锈钢", "confidence": 0.88, "source": "说卦传:金+至坚", "validations": 0},
-          {"value": "宝石/玉/硬质材料", "confidence": 0.78, "source": "说卦传:玉+纯坚", "validations": 0}
+          {
+            "value": "金属/合金/不锈钢",
+            "confidence": 0.88,
+            "source": "说卦传:金+至坚",
+            "validations": 0
+          },
+          {
+            "value": "宝石/玉/硬质材料",
+            "confidence": 0.78,
+            "source": "说卦传:玉+纯坚",
+            "validations": 0
+          }
         ],
         "shape": [
-          {"value": "圆形/球形/圆柱", "confidence": 0.88, "source": "说卦传:圜", "validations": 0},
-          {"value": "完整/独立/对称形", "confidence": 0.75, "source": "德性推导:健=自完", "validations": 0}
+          {
+            "value": "圆形/球形/圆柱",
+            "confidence": 0.88,
+            "source": "说卦传:圜",
+            "validations": 0
+          },
+          {
+            "value": "完整/独立/对称形",
+            "confidence": 0.75,
+            "source": "德性推导:健=自完",
+            "validations": 0
+          }
         ],
         "function": [
-          {"value": "独立/自完/不依赖外力", "confidence": 0.82, "source": "说卦传:健", "validations": 0},
-          {"value": "走时/计时/恒动", "confidence": 0.45, "source": "现代转译:时钟=健运不息", "validations": 0},
-          {"value": "冰冷/制冷", "confidence": 0.60, "source": "说卦传:寒+冰", "validations": 0}
+          {
+            "value": "独立/自完/不依赖外力",
+            "confidence": 0.82,
+            "source": "说卦传:健",
+            "validations": 0
+          },
+          {
+            "value": "走时/计时/恒动",
+            "confidence": 0.45,
+            "source": "现代转译:时钟=健运不息",
+            "validations": 0
+          },
+          {
+            "value": "冰冷/制冷",
+            "confidence": 0.6,
+            "source": "说卦传:寒+冰",
+            "validations": 0
+          }
         ],
         "color": [
-          {"value": "大赤/红色", "confidence": 0.85, "source": "说卦传:大赤(纯阳之色)", "validations": 0},
-          {"value": "金/银白/亮色", "confidence": 0.78, "source": "五行:金", "validations": 0}
+          {
+            "value": "大赤/红色",
+            "confidence": 0.85,
+            "source": "说卦传:大赤(纯阳之色)",
+            "validations": 0
+          },
+          {
+            "value": "金/银白/亮色",
+            "confidence": 0.78,
+            "source": "五行:金",
+            "validations": 0
+          }
         ],
         "body_part": [
-          {"value": "首/头", "confidence": 0.85, "source": "说卦传:首", "validations": 0}
+          {
+            "value": "首/头",
+            "confidence": 0.85,
+            "source": "说卦传:首",
+            "validations": 0
+          }
         ]
       },
       "signal_combinations": [
         {
-          "pattern": ["乾", "圆", "金", "健"],
-          "description": "圆形+金属+恒动 → 计时器",
-          "candidates": [
-            {"item": "手表/时钟/罗盘", "min_confidence": 0.65, "validations": 0}
+          "pattern": [
+            "乾",
+            "圆",
+            "金",
+            "健"
+          ],
+          "description": "圆形+金属+恒动 的特征画像： 计时器",
+          "characteristics": [
+            "乾",
+            "圆",
+            "金",
+            "健"
+          ],
+          "references": [
+            "手表/时钟/罗盘"
           ]
         },
         {
-          "pattern": ["乾", "冰", "寒"],
-          "description": "冰冷+圆形 → 冷藏品/冰制物",
-          "candidates": [
-            {"item": "冷藏品/冰制物", "min_confidence": 0.55, "validations": 0}
+          "pattern": [
+            "乾",
+            "冰",
+            "寒"
+          ],
+          "description": "冰冷+圆形 的特征画像： 冷藏品/冰制物",
+          "characteristics": [
+            "乾",
+            "冰",
+            "寒"
+          ],
+          "references": [
+            "冷藏品/冰制物"
           ]
         },
         {
-          "pattern": ["乾", "首"],
-          "description": "头部+金属/圆形 → 头戴品",
-          "candidates": [
-            {"item": "帽子/头盔/发饰", "min_confidence": 0.50, "validations": 0}
+          "pattern": [
+            "乾",
+            "首"
+          ],
+          "description": "头部+金属/圆形 的特征画像： 头戴品",
+          "characteristics": [
+            "乾",
+            "首"
+          ],
+          "references": [
+            "帽子/头盔/发饰"
           ]
         }
       ],
-      "modern_objects": [
-        {"item": "手表/钟表", "confidence": 0.65, "source": "乾+圆+金+健", "validations": 0},
-        {"item": "硬币", "confidence": 0.55, "source": "乾+圆+金+小", "validations": 0},
-        {"item": "金属餐具/钢笔", "confidence": 0.50, "source": "乾+金+硬", "validations": 0},
-        {"item": "球形饰品/LED灯泡", "confidence": 0.45, "source": "乾+圆+光", "validations": 0},
-        {"item": "轴承/齿轮", "confidence": 0.40, "source": "乾+圆+健动", "validations": 0},
-        {"item": "冰箱/冷藏品", "confidence": 0.35, "source": "乾+寒+冰", "validations": 0}
+      "reference_objects": [
+        {
+          "item": "手表/钟表",
+          "confidence": 0.65,
+          "source": "乾+圆+金+健",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "硬币",
+          "confidence": 0.55,
+          "source": "乾+圆+金+小",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "金属餐具/钢笔",
+          "confidence": 0.5,
+          "source": "乾+金+硬",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "球形饰品/LED灯泡",
+          "confidence": 0.45,
+          "source": "乾+圆+光",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "轴承/齿轮",
+          "confidence": 0.4,
+          "source": "乾+圆+健动",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "冰箱/冷藏品",
+          "confidence": 0.35,
+          "source": "乾+寒+冰",
+          "validations": 0,
+          "role": "reference"
+        }
       ]
     },
-
     "坤": {
       "gua_id": "kun",
       "symbol": "☷",
@@ -77,67 +187,189 @@
       "五行": "土（阴土）",
       "dimensions": {
         "material": [
-          {"value": "泥土/粉末/柔性材料", "confidence": 0.82, "source": "说卦传:地+土", "validations": 0},
-          {"value": "布料/织物", "confidence": 0.78, "source": "说卦传:布(平铺覆盖)", "validations": 0},
-          {"value": "陶瓷（釜=陶锅）", "confidence": 0.65, "source": "说卦传:釜(中空受物)", "validations": 0}
+          {
+            "value": "泥土/粉末/柔性材料",
+            "confidence": 0.82,
+            "source": "说卦传:地+土",
+            "validations": 0
+          },
+          {
+            "value": "布料/织物",
+            "confidence": 0.78,
+            "source": "说卦传:布(平铺覆盖)",
+            "validations": 0
+          },
+          {
+            "value": "陶瓷（釜=陶锅）",
+            "confidence": 0.65,
+            "source": "说卦传:釜(中空受物)",
+            "validations": 0
+          }
         ],
         "shape": [
-          {"value": "平铺/大面积/扁平", "confidence": 0.75, "source": "德性推导:顺=铺展", "validations": 0},
-          {"value": "中空/鼓起/有容", "confidence": 0.72, "source": "说卦传:腹+釜+大舆", "validations": 0}
+          {
+            "value": "平铺/大面积/扁平",
+            "confidence": 0.75,
+            "source": "德性推导:顺=铺展",
+            "validations": 0
+          },
+          {
+            "value": "中空/鼓起/有容",
+            "confidence": 0.72,
+            "source": "说卦传:腹+釜+大舆",
+            "validations": 0
+          }
         ],
         "function": [
-          {"value": "包容/承载/收纳", "confidence": 0.85, "source": "说卦传:顺+承载", "validations": 0},
-          {"value": "柔软/可塑/变形", "confidence": 0.75, "source": "德性推导:顺=柔", "validations": 0},
-          {"value": "大量同类聚集", "confidence": 0.65, "source": "说卦传:众+均", "validations": 0}
+          {
+            "value": "包容/承载/收纳",
+            "confidence": 0.85,
+            "source": "说卦传:顺+承载",
+            "validations": 0
+          },
+          {
+            "value": "柔软/可塑/变形",
+            "confidence": 0.75,
+            "source": "德性推导:顺=柔",
+            "validations": 0
+          },
+          {
+            "value": "大量同类聚集",
+            "confidence": 0.65,
+            "source": "说卦传:众+均",
+            "validations": 0
+          }
         ],
         "color": [
-          {"value": "黑/暗色", "confidence": 0.80, "source": "说卦传:黑", "validations": 0},
-          {"value": "黄/土色/棕褐", "confidence": 0.75, "source": "五行:土", "validations": 0}
+          {
+            "value": "黑/暗色",
+            "confidence": 0.8,
+            "source": "说卦传:黑",
+            "validations": 0
+          },
+          {
+            "value": "黄/土色/棕褐",
+            "confidence": 0.75,
+            "source": "五行:土",
+            "validations": 0
+          }
         ],
         "body_part": [
-          {"value": "腹（大腹能容）", "confidence": 0.82, "source": "说卦传:腹", "validations": 0}
+          {
+            "value": "腹（大腹能容）",
+            "confidence": 0.82,
+            "source": "说卦传:腹",
+            "validations": 0
+          }
         ]
       },
       "signal_combinations": [
         {
-          "pattern": ["坤", "布", "众"],
-          "description": "布类+多件 → 织物/衣物/袋子",
-          "candidates": [
-            {"item": "衣物/布料/袋子", "min_confidence": 0.75, "validations": 0}
+          "pattern": [
+            "坤",
+            "布",
+            "众"
+          ],
+          "description": "布类+多件 的特征画像： 织物/衣物/袋子",
+          "characteristics": [
+            "坤",
+            "布",
+            "众"
+          ],
+          "references": [
+            "衣物/布料/袋子"
           ]
         },
         {
-          "pattern": ["坤", "釜", "黄"],
-          "description": "中空容器+土色 → 陶瓷器皿",
-          "candidates": [
-            {"item": "陶瓷碗/盆/托盘", "min_confidence": 0.70, "validations": 0}
+          "pattern": [
+            "坤",
+            "釜",
+            "黄"
+          ],
+          "description": "中空容器+土色 的特征画像： 陶瓷器皿",
+          "characteristics": [
+            "坤",
+            "釜",
+            "黄"
+          ],
+          "references": [
+            "陶瓷碗/盆/托盘"
           ]
         },
         {
-          "pattern": ["坤", "柄"],
-          "description": "执持+容器 → 手柄/把手",
-          "candidates": [
-            {"item": "工具的手柄部分", "min_confidence": 0.55, "validations": 0}
+          "pattern": [
+            "坤",
+            "柄"
+          ],
+          "description": "执持+容器 的特征画像： 手柄/把手",
+          "characteristics": [
+            "坤",
+            "柄"
+          ],
+          "references": [
+            "工具的手柄部分"
           ]
         },
         {
-          "pattern": ["坤", "大舆"],
-          "description": "承载+大 → 车/盒状物",
-          "candidates": [
-            {"item": "玩具车/模型车/盒子", "min_confidence": 0.50, "validations": 0}
+          "pattern": [
+            "坤",
+            "大舆"
+          ],
+          "description": "承载+大 的特征画像： 车/盒状物",
+          "characteristics": [
+            "坤",
+            "大舆"
+          ],
+          "references": [
+            "玩具车/模型车/盒子"
           ]
         }
       ],
-      "modern_objects": [
-        {"item": "布袋/背包/收纳袋", "confidence": 0.72, "source": "坤+布+众", "validations": 0},
-        {"item": "陶瓷碗/盆", "confidence": 0.65, "source": "坤+釜+黄", "validations": 0},
-        {"item": "粉状物/泥土制品", "confidence": 0.55, "source": "坤+土+粉末", "validations": 0},
-        {"item": "汽车模型", "confidence": 0.45, "source": "坤+大舆", "validations": 0},
-        {"item": "瑜伽垫/毯子", "confidence": 0.40, "source": "坤+布+平铺", "validations": 0},
-        {"item": "多件套装", "confidence": 0.38, "source": "坤+众", "validations": 0}
+      "reference_objects": [
+        {
+          "item": "布袋/背包/收纳袋",
+          "confidence": 0.72,
+          "source": "坤+布+众",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "陶瓷碗/盆",
+          "confidence": 0.65,
+          "source": "坤+釜+黄",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "粉状物/泥土制品",
+          "confidence": 0.55,
+          "source": "坤+土+粉末",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "汽车模型",
+          "confidence": 0.45,
+          "source": "坤+大舆",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "瑜伽垫/毯子",
+          "confidence": 0.4,
+          "source": "坤+布+平铺",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "多件套装",
+          "confidence": 0.38,
+          "source": "坤+众",
+          "validations": 0,
+          "role": "reference"
+        }
       ]
     },
-
     "震": {
       "gua_id": "zhen",
       "symbol": "☳",
@@ -145,68 +377,190 @@
       "五行": "木",
       "dimensions": {
         "material": [
-          {"value": "木质/植物纤维/纸", "confidence": 0.82, "source": "说卦传:木+苍筤竹", "validations": 0},
-          {"value": "种子/坚果/植物来源", "confidence": 0.78, "source": "说卦传:反生稼+萑苇；第4轮验证(瓜子)", "validations": 1}
+          {
+            "value": "木质/植物纤维/纸",
+            "confidence": 0.82,
+            "source": "说卦传:木+苍筤竹",
+            "validations": 0
+          },
+          {
+            "value": "种子/坚果/植物来源",
+            "confidence": 0.78,
+            "source": "说卦传:反生稼+萑苇；第4轮验证(瓜子)",
+            "validations": 1
+          }
         ],
         "shape": [
-          {"value": "长条/从下向上伸展", "confidence": 0.72, "source": "德性推导:一阳在下", "validations": 0},
-          {"value": "颗粒/小粒状（种子）", "confidence": 0.65, "source": "第4轮验证(瓜子)", "validations": 1}
+          {
+            "value": "长条/从下向上伸展",
+            "confidence": 0.72,
+            "source": "德性推导:一阳在下",
+            "validations": 0
+          },
+          {
+            "value": "颗粒/小粒状（种子）",
+            "confidence": 0.65,
+            "source": "第4轮验证(瓜子)",
+            "validations": 1
+          }
         ],
         "function": [
-          {"value": "启动/发声/震动", "confidence": 0.85, "source": "说卦传:动+雷+善鸣马", "validations": 0},
-          {"value": "生机/从无到有/发芽", "confidence": 0.75, "source": "说卦传:反生+蕃鲜", "validations": 0},
-          {"value": "快充/电流初动", "confidence": 0.48, "source": "现代转译:雷=电流", "validations": 0},
-          {"value": "点火/启动燃烧", "confidence": 0.55, "source": "现代转译:雷暴=点火；第1轮关联", "validations": 1}
+          {
+            "value": "启动/发声/震动",
+            "confidence": 0.85,
+            "source": "说卦传:动+雷+善鸣马",
+            "validations": 0
+          },
+          {
+            "value": "生机/从无到有/发芽",
+            "confidence": 0.75,
+            "source": "说卦传:反生+蕃鲜",
+            "validations": 0
+          },
+          {
+            "value": "快充/电流初动",
+            "confidence": 0.48,
+            "source": "现代转译:雷=电流",
+            "validations": 0
+          },
+          {
+            "value": "点火/启动燃烧",
+            "confidence": 0.55,
+            "source": "现代转译:雷暴=点火；第1轮关联",
+            "validations": 1
+          }
         ],
         "color": [
-          {"value": "玄黄/黄绿/嫩绿", "confidence": 0.78, "source": "说卦传:玄黄(天地交激)", "validations": 0},
-          {"value": "青绿/春色", "confidence": 0.72, "source": "五行:木", "validations": 0}
+          {
+            "value": "玄黄/黄绿/嫩绿",
+            "confidence": 0.78,
+            "source": "说卦传:玄黄(天地交激)",
+            "validations": 0
+          },
+          {
+            "value": "青绿/春色",
+            "confidence": 0.72,
+            "source": "五行:木",
+            "validations": 0
+          }
         ],
         "body_part": [
-          {"value": "足（力从足起）", "confidence": 0.80, "source": "说卦传:足", "validations": 0}
+          {
+            "value": "足（力从足起）",
+            "confidence": 0.8,
+            "source": "说卦传:足",
+            "validations": 0
+          }
         ]
       },
       "signal_combinations": [
         {
-          "pattern": ["震", "种子", "木"],
-          "description": "植物+种子+木质 → 坚果/瓜子/谷物",
-          "candidates": [
-            {"item": "坚果/瓜子/干果/谷物", "min_confidence": 0.72, "validations": 1}
+          "pattern": [
+            "震",
+            "种子",
+            "木"
           ],
-          "note": "第4轮验证：雷火丰卦中震=种子信号被遗漏，实际物含瓜子"
-        },
-        {
-          "pattern": ["震", "动", "声"],
-          "description": "震动+发声 → 扬声器/喇叭/闹钟",
-          "candidates": [
-            {"item": "扬声器/喇叭/闹钟/发声玩具", "min_confidence": 0.50, "validations": 0}
+          "description": "植物+种子+木质 的特征画像： 坚果/瓜子/谷物",
+          "note": "第4轮验证：雷火丰卦中震=种子信号被遗漏，实际物含瓜子",
+          "characteristics": [
+            "震",
+            "种子",
+            "木"
+          ],
+          "references": [
+            "坚果/瓜子/干果/谷物"
           ]
         },
         {
-          "pattern": ["震", "足"],
-          "description": "足部+底部 → 鞋/袜/支架",
-          "candidates": [
-            {"item": "鞋/袜/脚垫/支架", "min_confidence": 0.50, "validations": 0}
+          "pattern": [
+            "震",
+            "动",
+            "声"
+          ],
+          "description": "震动+发声 的特征画像： 扬声器/喇叭/闹钟",
+          "characteristics": [
+            "震",
+            "动",
+            "声"
+          ],
+          "references": [
+            "扬声器/喇叭/闹钟/发声玩具"
           ]
         },
         {
-          "pattern": ["震", "反生"],
-          "description": "从无到有 → 需要激活才用的物品",
-          "candidates": [
-            {"item": "充电宝/打火机/开关/启动器", "min_confidence": 0.48, "validations": 0}
+          "pattern": [
+            "震",
+            "足"
+          ],
+          "description": "足部+底部 的特征画像： 鞋/袜/支架",
+          "characteristics": [
+            "震",
+            "足"
+          ],
+          "references": [
+            "鞋/袜/脚垫/支架"
+          ]
+        },
+        {
+          "pattern": [
+            "震",
+            "反生"
+          ],
+          "description": "从无到有 的特征画像： 需要激活才用的物品",
+          "characteristics": [
+            "震",
+            "反生"
+          ],
+          "references": [
+            "充电宝/打火机/开关/启动器"
           ]
         }
       ],
-      "modern_objects": [
-        {"item": "瓜子/坚果/种子/干果", "confidence": 0.72, "source": "第4轮验证", "validations": 1},
-        {"item": "水果/蔬菜/盆栽", "confidence": 0.60, "source": "震+反生", "validations": 0},
-        {"item": "扬声器/喇叭/震动马达", "confidence": 0.50, "source": "震+动+声", "validations": 0},
-        {"item": "打火机", "confidence": 0.55, "source": "震+离=雷火=点火；第1轮关联", "validations": 1},
-        {"item": "竹筷/木梳/铅笔", "confidence": 0.45, "source": "震+苍筤竹", "validations": 0},
-        {"item": "充电宝", "confidence": 0.48, "source": "震+反生=屯→复", "validations": 0}
+      "reference_objects": [
+        {
+          "item": "瓜子/坚果/种子/干果",
+          "confidence": 0.72,
+          "source": "第4轮验证",
+          "validations": 1,
+          "role": "reference"
+        },
+        {
+          "item": "水果/蔬菜/盆栽",
+          "confidence": 0.6,
+          "source": "震+反生",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "扬声器/喇叭/震动马达",
+          "confidence": 0.5,
+          "source": "震+动+声",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "打火机",
+          "confidence": 0.55,
+          "source": "震+离=雷火=点火；第1轮关联",
+          "validations": 1,
+          "role": "reference"
+        },
+        {
+          "item": "竹筷/木梳/铅笔",
+          "confidence": 0.45,
+          "source": "震+苍筤竹",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "充电宝",
+          "confidence": 0.48,
+          "source": "震+反生=屯→复",
+          "validations": 0,
+          "role": "reference"
+        }
       ]
     },
-
     "巽": {
       "gua_id": "xun",
       "symbol": "☴",
@@ -214,59 +568,170 @@
       "五行": "木（柔木）",
       "dimensions": {
         "material": [
-          {"value": "柔性木质/纤维/绳线", "confidence": 0.82, "source": "说卦传:木(柔木)+绳直", "validations": 0},
-          {"value": "布料/丝带/发圈", "confidence": 0.65, "source": "现代转译:柔+长", "validations": 0}
+          {
+            "value": "柔性木质/纤维/绳线",
+            "confidence": 0.82,
+            "source": "说卦传:木(柔木)+绳直",
+            "validations": 0
+          },
+          {
+            "value": "布料/丝带/发圈",
+            "confidence": 0.65,
+            "source": "现代转译:柔+长",
+            "validations": 0
+          }
         ],
         "shape": [
-          {"value": "长条形/细长/线状", "confidence": 0.85, "source": "说卦传:长+高(垂向延伸)", "validations": 0},
-          {"value": "可伸缩/可弯曲/缠绕", "confidence": 0.72, "source": "德性推导:入+进退=不定形", "validations": 0}
+          {
+            "value": "长条形/细长/线状",
+            "confidence": 0.85,
+            "source": "说卦传:长+高(垂向延伸)",
+            "validations": 0
+          },
+          {
+            "value": "可伸缩/可弯曲/缠绕",
+            "confidence": 0.72,
+            "source": "德性推导:入+进退=不定形",
+            "validations": 0
+          }
         ],
         "function": [
-          {"value": "渗透/渗入/细长", "confidence": 0.82, "source": "说卦传:入", "validations": 0},
-          {"value": "缠绕/捆束/连接", "confidence": 0.72, "source": "说卦传:绳直(以柔束粗)", "validations": 0},
-          {"value": "精细手工/巧入", "confidence": 0.60, "source": "说卦传:工(巧手入于物)", "validations": 0}
+          {
+            "value": "渗透/渗入/细长",
+            "confidence": 0.82,
+            "source": "说卦传:入",
+            "validations": 0
+          },
+          {
+            "value": "缠绕/捆束/连接",
+            "confidence": 0.72,
+            "source": "说卦传:绳直(以柔束粗)",
+            "validations": 0
+          },
+          {
+            "value": "精细手工/巧入",
+            "confidence": 0.6,
+            "source": "说卦传:工(巧手入于物)",
+            "validations": 0
+          }
         ],
         "color": [
-          {"value": "白/透明/浅色", "confidence": 0.82, "source": "说卦传:白(入之极则无色)", "validations": 0}
+          {
+            "value": "白/透明/浅色",
+            "confidence": 0.82,
+            "source": "说卦传:白(入之极则无色)",
+            "validations": 0
+          }
         ],
         "body_part": [
-          {"value": "手（陈抟注:巽为手，非股。手能入于物）", "confidence": 0.72, "source": "陈抟《正易心法》注", "validations": 0}
+          {
+            "value": "手（陈抟注:巽为手，非股。手能入于物）",
+            "confidence": 0.72,
+            "source": "陈抟《正易心法》注",
+            "validations": 0
+          }
         ]
       },
       "signal_combinations": [
         {
-          "pattern": ["巽", "绳", "长"],
-          "description": "细长+绳线 → 线/绳/带/数据线",
-          "candidates": [
-            {"item": "线/绳/带/数据线/耳机线", "min_confidence": 0.70, "validations": 0}
+          "pattern": [
+            "巽",
+            "绳",
+            "长"
+          ],
+          "description": "细长+绳线 的特征画像： 线/绳/带/数据线",
+          "characteristics": [
+            "巽",
+            "绳",
+            "长"
+          ],
+          "references": [
+            "线/绳/带/数据线/耳机线"
           ]
         },
         {
-          "pattern": ["巽", "白", "风"],
-          "description": "白色+长条 → 纸/布条/丝带",
-          "candidates": [
-            {"item": "白色长条物（纸/布条/丝带）", "min_confidence": 0.58, "validations": 0}
+          "pattern": [
+            "巽",
+            "白",
+            "风"
+          ],
+          "description": "白色+长条 的特征画像： 纸/布条/丝带",
+          "characteristics": [
+            "巽",
+            "白",
+            "风"
+          ],
+          "references": [
+            "白色长条物（纸/布条/丝带）"
           ]
         },
         {
-          "pattern": ["巽", "工"],
-          "description": "精细手工+入 → 文具/工具",
-          "candidates": [
-            {"item": "精细工具/手工制品/文具", "min_confidence": 0.55, "validations": 0}
+          "pattern": [
+            "巽",
+            "工"
+          ],
+          "description": "精细手工+入 的特征画像： 文具/工具",
+          "characteristics": [
+            "巽",
+            "工"
+          ],
+          "references": [
+            "精细工具/手工制品/文具"
           ]
         }
       ],
-      "modern_objects": [
-        {"item": "绳子/线/带", "confidence": 0.70, "source": "巽+绳+长", "validations": 0},
-        {"item": "数据线/充电线/耳机线", "confidence": 0.65, "source": "巽+绳+长(现代)", "validations": 0},
-        {"item": "发圈/丝巾/领带/腰带", "confidence": 0.58, "source": "巽+长+柔", "validations": 0},
-        {"item": "笔/筷子/直尺", "confidence": 0.55, "source": "巽+长+工", "validations": 0},
-        {"item": "吸管/拉链/链条", "confidence": 0.48, "source": "巽+中空+长", "validations": 0},
-        {"item": "风扇/吹风机", "confidence": 0.42, "source": "巽+风", "validations": 0},
-        {"item": "手套/口罩/滤网", "confidence": 0.38, "source": "巽+手+入", "validations": 0}
+      "reference_objects": [
+        {
+          "item": "绳子/线/带",
+          "confidence": 0.7,
+          "source": "巽+绳+长",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "数据线/充电线/耳机线",
+          "confidence": 0.65,
+          "source": "巽+绳+长(现代)",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "发圈/丝巾/领带/腰带",
+          "confidence": 0.58,
+          "source": "巽+长+柔",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "笔/筷子/直尺",
+          "confidence": 0.55,
+          "source": "巽+长+工",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "吸管/拉链/链条",
+          "confidence": 0.48,
+          "source": "巽+中空+长",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "风扇/吹风机",
+          "confidence": 0.42,
+          "source": "巽+风",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "手套/口罩/滤网",
+          "confidence": 0.38,
+          "source": "巽+手+入",
+          "validations": 0,
+          "role": "reference"
+        }
       ]
     },
-
     "坎": {
       "gua_id": "kan",
       "symbol": "☵",
@@ -274,87 +739,234 @@
       "五行": "水",
       "dimensions": {
         "material": [
-          {"value": "液体/水/流体", "confidence": 0.88, "source": "说卦传:水+沟渎", "validations": 0},
-          {"value": "金属（弧形/弯曲件）", "confidence": 0.70, "source": "说卦传:弓轮", "validations": 0},
-          {"value": "导电材料（电流=水流）", "confidence": 0.60, "source": "现代转译:电=流动", "validations": 1, "note": "第2轮验证(充电头)"}
+          {
+            "value": "液体/水/流体",
+            "confidence": 0.88,
+            "source": "说卦传:水+沟渎",
+            "validations": 0
+          },
+          {
+            "value": "金属（弧形/弯曲件）",
+            "confidence": 0.7,
+            "source": "说卦传:弓轮",
+            "validations": 0
+          },
+          {
+            "value": "导电材料（电流=水流）",
+            "confidence": 0.6,
+            "source": "现代转译:电=流动",
+            "validations": 1,
+            "note": "第2轮验证(充电头)"
+          }
         ],
         "shape": [
-          {"value": "弓形/弧形/弯曲", "confidence": 0.80, "source": "说卦传:弓轮", "validations": 0},
-          {"value": "中空/内部空虚", "confidence": 0.78, "source": "说卦传:陷(阳在核心被围)", "validations": 0},
-          {"value": "锋刃/锐利边缘", "confidence": 0.75, "source": "说卦传:矫輮(曲者直)+险；第5轮验证(刀片)", "validations": 1}
+          {
+            "value": "弓形/弧形/弯曲",
+            "confidence": 0.8,
+            "source": "说卦传:弓轮",
+            "validations": 0
+          },
+          {
+            "value": "中空/内部空虚",
+            "confidence": 0.78,
+            "source": "说卦传:陷(阳在核心被围)",
+            "validations": 0
+          },
+          {
+            "value": "锋刃/锐利边缘",
+            "confidence": 0.75,
+            "source": "说卦传:矫輮(曲者直)+险；第5轮验证(刀片)",
+            "validations": 1
+          }
         ],
         "function": [
-          {"value": "陷/险/锋利", "confidence": 0.85, "source": "说卦传:陷+险", "validations": 0},
-          {"value": "导电/电流/数据流", "confidence": 0.65, "source": "现代转译:水=电流；第2轮验证", "validations": 1},
-          {"value": "隐伏/暗藏/不可见", "confidence": 0.72, "source": "说卦传:隐伏+盗", "validations": 0}
+          {
+            "value": "陷/险/锋利",
+            "confidence": 0.85,
+            "source": "说卦传:陷+险",
+            "validations": 0
+          },
+          {
+            "value": "导电/电流/数据流",
+            "confidence": 0.65,
+            "source": "现代转译:水=电流；第2轮验证",
+            "validations": 1
+          },
+          {
+            "value": "隐伏/暗藏/不可见",
+            "confidence": 0.72,
+            "source": "说卦传:隐伏+盗",
+            "validations": 0
+          }
         ],
         "color": [
-          {"value": "赤/深红/暗红", "confidence": 0.78, "source": "说卦传:赤(陷中之阳色)", "validations": 0},
-          {"value": "黑蓝/暗色（水色）", "confidence": 0.72, "source": "五行:水", "validations": 0}
+          {
+            "value": "赤/深红/暗红",
+            "confidence": 0.78,
+            "source": "说卦传:赤(陷中之阳色)",
+            "validations": 0
+          },
+          {
+            "value": "黑蓝/暗色（水色）",
+            "confidence": 0.72,
+            "source": "五行:水",
+            "validations": 0
+          }
         ],
         "body_part": [
-          {"value": "耳（听觉）", "confidence": 0.82, "source": "说卦传:耳", "validations": 0},
-          {"value": "心（阳陷于阴）", "confidence": 0.70, "source": "说卦传:心", "validations": 0}
+          {
+            "value": "耳（听觉）",
+            "confidence": 0.82,
+            "source": "说卦传:耳",
+            "validations": 0
+          },
+          {
+            "value": "心（阳陷于阴）",
+            "confidence": 0.7,
+            "source": "说卦传:心",
+            "validations": 0
+          }
         ]
       },
       "signal_combinations": [
         {
-          "pattern": ["坎", "水", "中空"],
-          "description": "液体+中空 → 液体容器",
-          "candidates": [
-            {"item": "杯子/瓶子/水壶", "min_confidence": 0.68, "validations": 0}
+          "pattern": [
+            "坎",
+            "水",
+            "中空"
           ],
-          "note": "需与离区分：坎偏液态功能，离偏形态中空"
-        },
-        {
-          "pattern": ["坎", "电"],
-          "description": "电流 → 充电器/电源/电池/数据线",
-          "candidates": [
-            {"item": "充电器/电源/电池/数据线/电子配件", "min_confidence": 0.72, "validations": 1}
+          "description": "液体+中空 的特征画像： 液体容器",
+          "note": "需与离区分：坎偏液态功能，离偏形态中空",
+          "characteristics": [
+            "坎",
+            "水",
+            "中空"
           ],
-          "note": "第2轮验证：水雷屯→白色充电头 ✅"
-        },
-        {
-          "pattern": ["坎", "险", "锋利"],
-          "description": "险+锋利 → 刀/剪/锐利工具",
-          "candidates": [
-            {"item": "刀/剪/钳/针/锐利工具", "min_confidence": 0.70, "validations": 1}
-          ],
-          "note": "第5轮验证：艮为山互体含坎=剪刀刀片锋利 ✅"
-        },
-        {
-          "pattern": ["坎", "弓轮"],
-          "description": "弯曲+金属 → 弧形物/轮子",
-          "candidates": [
-            {"item": "弧形/弯曲金属物/轮子", "min_confidence": 0.55, "validations": 0}
+          "references": [
+            "杯子/瓶子/水壶"
           ]
         },
         {
-          "pattern": ["坎", "隐伏"],
-          "description": "不可见+存储 → 隐藏功能物",
-          "candidates": [
-            {"item": "U盘/内置存储/密码锁", "min_confidence": 0.48, "validations": 0}
+          "pattern": [
+            "坎",
+            "电"
+          ],
+          "description": "电流 的特征画像： 充电器/电源/电池/数据线",
+          "note": "第2轮验证：水雷屯→白色充电头 ✅",
+          "characteristics": [
+            "坎",
+            "电"
+          ],
+          "references": [
+            "充电器/电源/电池/数据线/电子配件"
           ]
         },
         {
-          "pattern": ["坎", "耳"],
-          "description": "耳朵+听觉 → 耳机/耳塞",
-          "candidates": [
-            {"item": "耳机/耳塞/耳罩", "min_confidence": 0.50, "validations": 0}
+          "pattern": [
+            "坎",
+            "险",
+            "锋利"
           ],
-          "note": "第3轮辅助验证：坎在互体=听觉关联 ✅"
+          "description": "险+锋利 的特征画像： 刀/剪/锐利工具",
+          "note": "第5轮验证：艮为山互体含坎=剪刀刀片锋利 ✅",
+          "characteristics": [
+            "坎",
+            "险",
+            "锋利"
+          ],
+          "references": [
+            "刀/剪/钳/针/锐利工具"
+          ]
+        },
+        {
+          "pattern": [
+            "坎",
+            "弓轮"
+          ],
+          "description": "弯曲+金属 的特征画像： 弧形物/轮子",
+          "characteristics": [
+            "坎",
+            "弓轮"
+          ],
+          "references": [
+            "弧形/弯曲金属物/轮子"
+          ]
+        },
+        {
+          "pattern": [
+            "坎",
+            "隐伏"
+          ],
+          "description": "不可见+存储 的特征画像： 隐藏功能物",
+          "characteristics": [
+            "坎",
+            "隐伏"
+          ],
+          "references": [
+            "U盘/内置存储/密码锁"
+          ]
+        },
+        {
+          "pattern": [
+            "坎",
+            "耳"
+          ],
+          "description": "耳朵+听觉 的特征画像： 耳机/耳塞",
+          "note": "第3轮辅助验证：坎在互体=听觉关联 ✅",
+          "characteristics": [
+            "坎",
+            "耳"
+          ],
+          "references": [
+            "耳机/耳塞/耳罩"
+          ]
         }
       ],
-      "modern_objects": [
-        {"item": "充电器/充电头", "confidence": 0.78, "source": "坎+电；第2轮验证", "validations": 1},
-        {"item": "电池/电源适配器", "confidence": 0.72, "source": "坎+电+存储", "validations": 0},
-        {"item": "刀片/剪刀/刀具", "confidence": 0.75, "source": "坎+锋利；第5轮验证", "validations": 1},
-        {"item": "水杯/水瓶/液体容器", "confidence": 0.68, "source": "坎+水+中空", "validations": 0},
-        {"item": "耳机/耳塞/耳罩", "confidence": 0.50, "source": "坎+耳", "validations": 0},
-        {"item": "数据线", "confidence": 0.55, "source": "坎+电+线(流)", "validations": 0}
+      "reference_objects": [
+        {
+          "item": "充电器/充电头",
+          "confidence": 0.78,
+          "source": "坎+电；第2轮验证",
+          "validations": 1,
+          "role": "reference"
+        },
+        {
+          "item": "电池/电源适配器",
+          "confidence": 0.72,
+          "source": "坎+电+存储",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "刀片/剪刀/刀具",
+          "confidence": 0.75,
+          "source": "坎+锋利；第5轮验证",
+          "validations": 1,
+          "role": "reference"
+        },
+        {
+          "item": "水杯/水瓶/液体容器",
+          "confidence": 0.68,
+          "source": "坎+水+中空",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "耳机/耳塞/耳罩",
+          "confidence": 0.5,
+          "source": "坎+耳",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "数据线",
+          "confidence": 0.55,
+          "source": "坎+电+线(流)",
+          "validations": 0,
+          "role": "reference"
+        }
       ]
     },
-
     "离": {
       "gua_id": "li",
       "symbol": "☲",
@@ -362,85 +974,231 @@
       "五行": "火",
       "dimensions": {
         "material": [
-          {"value": "透明/玻璃/亚克力/塑料", "confidence": 0.78, "source": "德性推导:外硬内虚→透明容器；第4轮验证(树脂瓶)", "validations": 1},
-          {"value": "外壳硬内柔/有壳", "confidence": 0.75, "source": "说卦传:甲胄+鳖蟹蠃蚌龟", "validations": 0},
-          {"value": "干燥/烤制材料", "confidence": 0.60, "source": "德性推导:乾燥(阳在外炙烤)", "validations": 0}
+          {
+            "value": "透明/玻璃/亚克力/塑料",
+            "confidence": 0.78,
+            "source": "德性推导:外硬内虚→透明容器；第4轮验证(树脂瓶)",
+            "validations": 1
+          },
+          {
+            "value": "外壳硬内柔/有壳",
+            "confidence": 0.75,
+            "source": "说卦传:甲胄+鳖蟹蠃蚌龟",
+            "validations": 0
+          },
+          {
+            "value": "干燥/烤制材料",
+            "confidence": 0.6,
+            "source": "德性推导:乾燥(阳在外炙烤)",
+            "validations": 0
+          }
         ],
         "shape": [
-          {"value": "中空/外硬内虚/壳状", "confidence": 0.85, "source": "说卦传:甲胄+大腹+鳖蟹", "validations": 0},
-          {"value": "扁平/面状/屏幕状", "confidence": 0.55, "source": "现代转译:目+光=显示面", "validations": 0}
+          {
+            "value": "中空/外硬内虚/壳状",
+            "confidence": 0.85,
+            "source": "说卦传:甲胄+大腹+鳖蟹",
+            "validations": 0
+          },
+          {
+            "value": "扁平/面状/屏幕状",
+            "confidence": 0.55,
+            "source": "现代转译:目+光=显示面",
+            "validations": 0
+          }
         ],
         "function": [
-          {"value": "火/光/点亮/燃烧", "confidence": 0.88, "source": "说卦传:火+日+电", "validations": 0},
-          {"value": "视觉/看见/显示", "confidence": 0.72, "source": "说卦传:目", "validations": 0},
-          {"value": "中空容纳/外护内", "confidence": 0.72, "source": "说卦传:大腹+甲胄", "validations": 0},
-          {"value": "加热/干燥/烤制", "confidence": 0.60, "source": "德性推导:火+乾燥", "validations": 0}
+          {
+            "value": "火/光/点亮/燃烧",
+            "confidence": 0.88,
+            "source": "说卦传:火+日+电",
+            "validations": 0
+          },
+          {
+            "value": "视觉/看见/显示",
+            "confidence": 0.72,
+            "source": "说卦传:目",
+            "validations": 0
+          },
+          {
+            "value": "中空容纳/外护内",
+            "confidence": 0.72,
+            "source": "说卦传:大腹+甲胄",
+            "validations": 0
+          },
+          {
+            "value": "加热/干燥/烤制",
+            "confidence": 0.6,
+            "source": "德性推导:火+乾燥",
+            "validations": 0
+          }
         ],
         "color": [
-          {"value": "红/橙/黄/暖色", "confidence": 0.85, "source": "说卦传:火色；第1轮验证(红打火机)", "validations": 1},
-          {"value": "透明/无色（玻璃/塑料）", "confidence": 0.65, "source": "德性推导:离依附于阳故色随所附", "validations": 0}
+          {
+            "value": "红/橙/黄/暖色",
+            "confidence": 0.85,
+            "source": "说卦传:火色；第1轮验证(红打火机)",
+            "validations": 1
+          },
+          {
+            "value": "透明/无色（玻璃/塑料）",
+            "confidence": 0.65,
+            "source": "德性推导:离依附于阳故色随所附",
+            "validations": 0
+          }
         ],
         "body_part": [
-          {"value": "目（视觉）", "confidence": 0.85, "source": "说卦传:目", "validations": 0},
-          {"value": "大腹（中空能容）", "confidence": 0.72, "source": "说卦传:大腹", "validations": 0}
+          {
+            "value": "目（视觉）",
+            "confidence": 0.85,
+            "source": "说卦传:目",
+            "validations": 0
+          },
+          {
+            "value": "大腹（中空能容）",
+            "confidence": 0.72,
+            "source": "说卦传:大腹",
+            "validations": 0
+          }
         ]
       },
       "signal_combinations": [
         {
-          "pattern": ["离", "火", "光明"],
-          "description": "火+光 → 打火机/火柴/点火器",
-          "candidates": [
-            {"item": "打火机/火柴/点火器", "min_confidence": 0.72, "validations": 1}
+          "pattern": [
+            "离",
+            "火",
+            "光明"
           ],
-          "note": "第1轮验证：泽雷随互体含离=火信号未被大胆使用 ❌"
-        },
-        {
-          "pattern": ["离", "目"],
-          "description": "视觉+光 → 眼镜/屏幕/相机",
-          "candidates": [
-            {"item": "眼镜/墨镜/放大镜/屏幕/相机", "min_confidence": 0.60, "validations": 0}
-          ]
-        },
-        {
-          "pattern": ["离", "透明", "中空"],
-          "description": "透明+中空 → 玻璃杯/透明容器",
-          "candidates": [
-            {"item": "玻璃杯/透明瓶/塑料盒/亚克力制品", "min_confidence": 0.70, "validations": 1}
+          "description": "火+光 的特征画像： 打火机/火柴/点火器",
+          "note": "第1轮验证：泽雷随互体含离=火信号未被大胆使用 ❌",
+          "characteristics": [
+            "离",
+            "火",
+            "光明"
           ],
-          "note": "第4轮验证：雷火丰卦中树脂瓶=透明+中空 ✅"
-        },
-        {
-          "pattern": ["离", "大腹"],
-          "description": "中空有容 → 容器/盒子/包",
-          "candidates": [
-            {"item": "容器/盒子/包（中空有容）", "min_confidence": 0.62, "validations": 0}
+          "references": [
+            "打火机/火柴/点火器"
           ]
         },
         {
-          "pattern": ["离", "甲胄"],
-          "description": "外壳+保护 → 手机壳/盒子",
-          "candidates": [
-            {"item": "保护壳/手机壳/眼镜盒/套子", "min_confidence": 0.55, "validations": 0}
+          "pattern": [
+            "离",
+            "目"
+          ],
+          "description": "视觉+光 的特征画像： 眼镜/屏幕/相机",
+          "characteristics": [
+            "离",
+            "目"
+          ],
+          "references": [
+            "眼镜/墨镜/放大镜/屏幕/相机"
           ]
         },
         {
-          "pattern": ["离", "干燥"],
-          "description": "干燥+食物 → 干制食品",
-          "candidates": [
-            {"item": "干制食品/脱水物/烤制品", "min_confidence": 0.48, "validations": 0}
+          "pattern": [
+            "离",
+            "透明",
+            "中空"
+          ],
+          "description": "透明+中空 的特征画像： 玻璃杯/透明容器",
+          "note": "第4轮验证：雷火丰卦中树脂瓶=透明+中空 ✅",
+          "characteristics": [
+            "离",
+            "透明",
+            "中空"
+          ],
+          "references": [
+            "玻璃杯/透明瓶/塑料盒/亚克力制品"
+          ]
+        },
+        {
+          "pattern": [
+            "离",
+            "大腹"
+          ],
+          "description": "中空有容 的特征画像： 容器/盒子/包",
+          "characteristics": [
+            "离",
+            "大腹"
+          ],
+          "references": [
+            "容器/盒子/包（中空有容）"
+          ]
+        },
+        {
+          "pattern": [
+            "离",
+            "甲胄"
+          ],
+          "description": "外壳+保护 的特征画像： 手机壳/盒子",
+          "characteristics": [
+            "离",
+            "甲胄"
+          ],
+          "references": [
+            "保护壳/手机壳/眼镜盒/套子"
+          ]
+        },
+        {
+          "pattern": [
+            "离",
+            "干燥"
+          ],
+          "description": "干燥+食物 的特征画像： 干制食品",
+          "characteristics": [
+            "离",
+            "干燥"
+          ],
+          "references": [
+            "干制食品/脱水物/烤制品"
           ]
         }
       ],
-      "modern_objects": [
-        {"item": "打火机/点火器", "confidence": 0.72, "source": "离+火；第1轮关联(未命中但信号存在)", "validations": 1},
-        {"item": "屏幕/手机/显示器", "confidence": 0.60, "source": "离+目+光", "validations": 0},
-        {"item": "玻璃杯/透明瓶/塑料盒", "confidence": 0.72, "source": "离+透明+中空；第4轮验证", "validations": 1},
-        {"item": "灯/灯泡/手电筒", "confidence": 0.65, "source": "离+火+光明", "validations": 0},
-        {"item": "眼镜/墨镜", "confidence": 0.55, "source": "离+目", "validations": 0},
-        {"item": "烤箱/加热器", "confidence": 0.42, "source": "离+火+干燥", "validations": 0}
+      "reference_objects": [
+        {
+          "item": "打火机/点火器",
+          "confidence": 0.72,
+          "source": "离+火；第1轮关联(未命中但信号存在)",
+          "validations": 1,
+          "role": "reference"
+        },
+        {
+          "item": "屏幕/手机/显示器",
+          "confidence": 0.6,
+          "source": "离+目+光",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "玻璃杯/透明瓶/塑料盒",
+          "confidence": 0.72,
+          "source": "离+透明+中空；第4轮验证",
+          "validations": 1,
+          "role": "reference"
+        },
+        {
+          "item": "灯/灯泡/手电筒",
+          "confidence": 0.65,
+          "source": "离+火+光明",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "眼镜/墨镜",
+          "confidence": 0.55,
+          "source": "离+目",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "烤箱/加热器",
+          "confidence": 0.42,
+          "source": "离+火+干燥",
+          "validations": 0,
+          "role": "reference"
+        }
       ]
     },
-
     "艮": {
       "gua_id": "gen",
       "symbol": "☶",
@@ -448,84 +1206,233 @@
       "五行": "土（阳土）",
       "dimensions": {
         "material": [
-          {"value": "石/陶瓷/砖/硬土", "confidence": 0.88, "source": "说卦传:山+小石", "validations": 0},
-          {"value": "硬质金属（门阙构件）", "confidence": 0.68, "source": "说卦传:门阙+阍寺；第5轮验证(剪刀金属)", "validations": 1}
+          {
+            "value": "石/陶瓷/砖/硬土",
+            "confidence": 0.88,
+            "source": "说卦传:山+小石",
+            "validations": 0
+          },
+          {
+            "value": "硬质金属（门阙构件）",
+            "confidence": 0.68,
+            "source": "说卦传:门阙+阍寺；第5轮验证(剪刀金属)",
+            "validations": 1
+          }
         ],
         "shape": [
-          {"value": "块状/硬质/不可变形", "confidence": 0.82, "source": "说卦传:山+小石+止", "validations": 0},
-          {"value": "框状/门状/环形", "confidence": 0.78, "source": "说卦传:门阙；第5轮验证(剪刀双环手柄)", "validations": 1},
-          {"value": "双体对称（重卦时）", "confidence": 0.80, "source": "重卦规则：艮为艮=双硬体对称；第5轮验证", "validations": 1}
+          {
+            "value": "块状/硬质/不可变形",
+            "confidence": 0.82,
+            "source": "说卦传:山+小石+止",
+            "validations": 0
+          },
+          {
+            "value": "框状/门状/环形",
+            "confidence": 0.78,
+            "source": "说卦传:门阙；第5轮验证(剪刀双环手柄)",
+            "validations": 1
+          },
+          {
+            "value": "双体对称（重卦时）",
+            "confidence": 0.8,
+            "source": "重卦规则：艮为艮=双硬体对称；第5轮验证",
+            "validations": 1
+          }
         ],
         "function": [
-          {"value": "静止/固定/稳定", "confidence": 0.85, "source": "说卦传:止", "validations": 0},
-          {"value": "守住/看护/门禁", "confidence": 0.70, "source": "说卦传:阍寺(守门构件)", "validations": 0},
-          {"value": "果实/果蓏（圆形果实）", "confidence": 0.68, "source": "说卦传:果蓏", "validations": 0}
+          {
+            "value": "静止/固定/稳定",
+            "confidence": 0.85,
+            "source": "说卦传:止",
+            "validations": 0
+          },
+          {
+            "value": "守住/看护/门禁",
+            "confidence": 0.7,
+            "source": "说卦传:阍寺(守门构件)",
+            "validations": 0
+          },
+          {
+            "value": "果实/果蓏（圆形果实）",
+            "confidence": 0.68,
+            "source": "说卦传:果蓏",
+            "validations": 0
+          }
         ],
         "color": [
-          {"value": "黄/棕/褐/灰/土色", "confidence": 0.80, "source": "五行:土", "validations": 0},
-          {"value": "陶土色/砖色", "confidence": 0.65, "source": "艮+陶瓷", "validations": 0}
+          {
+            "value": "黄/棕/褐/灰/土色",
+            "confidence": 0.8,
+            "source": "五行:土",
+            "validations": 0
+          },
+          {
+            "value": "陶土色/砖色",
+            "confidence": 0.65,
+            "source": "艮+陶瓷",
+            "validations": 0
+          }
         ],
         "body_part": [
-          {"value": "鼻（陈抟注:鼻在面之最高部）", "confidence": 0.72, "source": "陈抟《正易心法》注", "validations": 0},
-          {"value": "背（背部）", "confidence": 0.70, "source": "说卦传:背", "validations": 0}
+          {
+            "value": "鼻（陈抟注:鼻在面之最高部）",
+            "confidence": 0.72,
+            "source": "陈抟《正易心法》注",
+            "validations": 0
+          },
+          {
+            "value": "背（背部）",
+            "confidence": 0.7,
+            "source": "说卦传:背",
+            "validations": 0
+          }
         ]
       },
       "signal_combinations": [
         {
-          "pattern": ["艮", "门阙", "双艮重卦"],
-          "description": "框状+双体对称 → 剪刀/钳子/夹子",
-          "candidates": [
-            {"item": "剪刀/钳子/夹子/镊子", "min_confidence": 0.80, "validations": 1}
+          "pattern": [
+            "艮",
+            "门阙",
+            "双艮重卦"
           ],
-          "note": "第5轮验证：艮为山→剪刀双环手柄+双刃体 ✅（未命中因工具盲区）"
-        },
-        {
-          "pattern": ["艮", "石", "止"],
-          "description": "石头+静止 → 砚台/镇纸/石摆件",
-          "candidates": [
-            {"item": "石头/砚台/镇纸/石摆件/化石", "min_confidence": 0.68, "validations": 0}
+          "description": "框状+双体对称 的特征画像： 剪刀/钳子/夹子",
+          "note": "第5轮验证：艮为山→剪刀双环手柄+双刃体 ✅（未命中因工具盲区）",
+          "characteristics": [
+            "艮",
+            "门阙",
+            "双艮重卦"
+          ],
+          "references": [
+            "剪刀/钳子/夹子/镊子"
           ]
         },
         {
-          "pattern": ["艮", "土", "火"],
-          "description": "土+火烧 → 陶瓷/陶器",
-          "candidates": [
-            {"item": "陶瓷/陶器/瓷杯/瓷盘", "min_confidence": 0.65, "validations": 0}
+          "pattern": [
+            "艮",
+            "石",
+            "止"
+          ],
+          "description": "石头+静止 的特征画像： 砚台/镇纸/石摆件",
+          "characteristics": [
+            "艮",
+            "石",
+            "止"
+          ],
+          "references": [
+            "石头/砚台/镇纸/石摆件/化石"
           ]
         },
         {
-          "pattern": ["艮", "鼻"],
-          "description": "鼻(面部最高点)→口罩/眼镜",
-          "candidates": [
-            {"item": "口罩/鼻贴/眼镜/眼镜盒", "min_confidence": 0.58, "validations": 0}
+          "pattern": [
+            "艮",
+            "土",
+            "火"
+          ],
+          "description": "土+火烧 的特征画像： 陶瓷/陶器",
+          "characteristics": [
+            "艮",
+            "土",
+            "火"
+          ],
+          "references": [
+            "陶瓷/陶器/瓷杯/瓷盘"
           ]
         },
         {
-          "pattern": ["艮", "果蓏"],
-          "description": "果实 → 水果/瓜果",
-          "candidates": [
-            {"item": "水果/瓜果/果干", "min_confidence": 0.60, "validations": 0}
+          "pattern": [
+            "艮",
+            "鼻"
+          ],
+          "description": "鼻(面部最高点)的特征画像：口罩/眼镜",
+          "characteristics": [
+            "艮",
+            "鼻"
+          ],
+          "references": [
+            "口罩/鼻贴/眼镜/眼镜盒"
           ]
         },
         {
-          "pattern": ["艮", "阍寺"],
-          "description": "门禁+守 → 锁/钥匙",
-          "candidates": [
-            {"item": "锁/钥匙/门禁卡/开关", "min_confidence": 0.55, "validations": 0}
+          "pattern": [
+            "艮",
+            "果蓏"
+          ],
+          "description": "果实 的特征画像： 水果/瓜果",
+          "characteristics": [
+            "艮",
+            "果蓏"
+          ],
+          "references": [
+            "水果/瓜果/果干"
+          ]
+        },
+        {
+          "pattern": [
+            "艮",
+            "阍寺"
+          ],
+          "description": "门禁+守 的特征画像： 锁/钥匙",
+          "characteristics": [
+            "艮",
+            "阍寺"
+          ],
+          "references": [
+            "锁/钥匙/门禁卡/开关"
           ]
         }
       ],
-      "modern_objects": [
-        {"item": "剪刀", "confidence": 0.80, "source": "艮=门阙+双体；第5轮验证(信号存在)", "validations": 1},
-        {"item": "钳子/夹子/镊子", "confidence": 0.72, "source": "艮=门阙+双体", "validations": 0},
-        {"item": "石头/砚台/镇纸", "confidence": 0.68, "source": "艮=止+石", "validations": 0},
-        {"item": "陶瓷/陶器", "confidence": 0.65, "source": "艮+土+火", "validations": 0},
-        {"item": "口罩/鼻贴", "confidence": 0.55, "source": "艮=鼻(陈抟注)", "validations": 0},
-        {"item": "锁/钥匙", "confidence": 0.52, "source": "艮=阍寺", "validations": 0},
-        {"item": "眼镜", "confidence": 0.55, "source": "艮=鼻(鼻托)", "validations": 0}
+      "reference_objects": [
+        {
+          "item": "剪刀",
+          "confidence": 0.8,
+          "source": "艮=门阙+双体；第5轮验证(信号存在)",
+          "validations": 1,
+          "role": "reference"
+        },
+        {
+          "item": "钳子/夹子/镊子",
+          "confidence": 0.72,
+          "source": "艮=门阙+双体",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "石头/砚台/镇纸",
+          "confidence": 0.68,
+          "source": "艮=止+石",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "陶瓷/陶器",
+          "confidence": 0.65,
+          "source": "艮+土+火",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "口罩/鼻贴",
+          "confidence": 0.55,
+          "source": "艮=鼻(陈抟注)",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "锁/钥匙",
+          "confidence": 0.52,
+          "source": "艮=阍寺",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "眼镜",
+          "confidence": 0.55,
+          "source": "艮=鼻(鼻托)",
+          "validations": 0,
+          "role": "reference"
+        }
       ]
     },
-
     "兑": {
       "gua_id": "dui",
       "symbol": "☱",
@@ -533,135 +1440,383 @@
       "五行": "金（阴金）",
       "dimensions": {
         "material": [
-          {"value": "金属/金银铜铁", "confidence": 0.88, "source": "说卦传:金(西方金位)", "validations": 0},
-          {"value": "矿物/亮面材质", "confidence": 0.70, "source": "五行:金", "validations": 0}
+          {
+            "value": "金属/金银铜铁",
+            "confidence": 0.88,
+            "source": "说卦传:金(西方金位)",
+            "validations": 0
+          },
+          {
+            "value": "矿物/亮面材质",
+            "confidence": 0.7,
+            "source": "五行:金",
+            "validations": 0
+          }
         ],
         "shape": [
-          {"value": "开口/缺口/孔洞", "confidence": 0.85, "source": "说卦传:口舌(开口之象)+毁折", "validations": 0},
-          {"value": "圆形/环形（耳/口）", "confidence": 0.60, "source": "说卦传:口+耳", "validations": 0}
+          {
+            "value": "开口/缺口/孔洞",
+            "confidence": 0.85,
+            "source": "说卦传:口舌(开口之象)+毁折",
+            "validations": 0
+          },
+          {
+            "value": "圆形/环形（耳/口）",
+            "confidence": 0.6,
+            "source": "说卦传:口+耳",
+            "validations": 0
+          }
         ],
         "function": [
-          {"value": "开口/出声音/愉悦", "confidence": 0.82, "source": "说卦传:说(悦)+口舌", "validations": 0},
-          {"value": "听觉/耳的入口", "confidence": 0.90, "source": "说卦传:耳；第3轮验证(耳塞)", "validations": 1},
-          {"value": "破损/毁折/易脱落", "confidence": 0.72, "source": "说卦传:毁折+附决", "validations": 0}
+          {
+            "value": "开口/出声音/愉悦",
+            "confidence": 0.82,
+            "source": "说卦传:说(悦)+口舌",
+            "validations": 0
+          },
+          {
+            "value": "听觉/耳的入口",
+            "confidence": 0.9,
+            "source": "说卦传:耳；第3轮验证(耳塞)",
+            "validations": 1
+          },
+          {
+            "value": "破损/毁折/易脱落",
+            "confidence": 0.72,
+            "source": "说卦传:毁折+附决",
+            "validations": 0
+          }
         ],
         "color": [
-          {"value": "白/银/金色", "confidence": 0.82, "source": "五行:金", "validations": 0},
-          {"value": "亮金属色/光泽", "confidence": 0.72, "source": "五行:金+说", "validations": 0}
+          {
+            "value": "白/银/金色",
+            "confidence": 0.82,
+            "source": "五行:金",
+            "validations": 0
+          },
+          {
+            "value": "亮金属色/光泽",
+            "confidence": 0.72,
+            "source": "五行:金+说",
+            "validations": 0
+          }
         ],
         "body_part": [
-          {"value": "口/舌（开口之象，陈抟注）", "confidence": 0.82, "source": "说卦传:口舌；陈抟注", "validations": 0},
-          {"value": "耳（听觉入口）", "confidence": 0.90, "source": "说卦传:耳；第3轮验证命中 ✅", "validations": 1}
+          {
+            "value": "口/舌（开口之象，陈抟注）",
+            "confidence": 0.82,
+            "source": "说卦传:口舌；陈抟注",
+            "validations": 0
+          },
+          {
+            "value": "耳（听觉入口）",
+            "confidence": 0.9,
+            "source": "说卦传:耳；第3轮验证命中 ✅",
+            "validations": 1
+          }
         ]
       },
       "signal_combinations": [
         {
-          "pattern": ["兑", "耳"],
-          "description": "听觉+入口 → 耳机/耳塞/听力相关",
-          "candidates": [
-            {"item": "耳机/耳塞/耳罩/助听器", "min_confidence": 0.90, "validations": 1}
+          "pattern": [
+            "兑",
+            "耳"
           ],
-          "note": "第3轮完全命中：雷天大壮→雷泽归妹→黄色泡沫耳塞 ✅"
-        },
-        {
-          "pattern": ["兑", "口"],
-          "description": "开口 → 杯子/碗/口腔护理",
-          "candidates": [
-            {"item": "杯子/碗/壶（开口容器）/口腔护理品", "min_confidence": 0.68, "validations": 0}
+          "description": "听觉+入口 的特征画像： 耳机/耳塞/听力相关",
+          "note": "第3轮完全命中：雷天大壮→雷泽归妹→黄色泡沫耳塞 ✅",
+          "characteristics": [
+            "兑",
+            "耳"
+          ],
+          "references": [
+            "耳机/耳塞/耳罩/助听器"
           ]
         },
         {
-          "pattern": ["兑", "金", "毁折"],
-          "description": "金属+破损 → 小金属件/钥匙",
-          "candidates": [
-            {"item": "金属小物件/钥匙/螺丝/徽章/有缺损的金属", "min_confidence": 0.62, "validations": 0}
+          "pattern": [
+            "兑",
+            "口"
+          ],
+          "description": "开口 的特征画像： 杯子/碗/口腔护理",
+          "characteristics": [
+            "兑",
+            "口"
+          ],
+          "references": [
+            "杯子/碗/壶（开口容器）/口腔护理品"
           ]
         },
         {
-          "pattern": ["兑", "羊"],
-          "description": "羊 → 羊毛/毛绒",
-          "candidates": [
-            {"item": "羊毛制品/毛绒玩具", "min_confidence": 0.50, "validations": 0}
+          "pattern": [
+            "兑",
+            "金",
+            "毁折"
+          ],
+          "description": "金属+破损 的特征画像： 小金属件/钥匙",
+          "characteristics": [
+            "兑",
+            "金",
+            "毁折"
+          ],
+          "references": [
+            "金属小物件/钥匙/螺丝/徽章/有缺损的金属"
           ]
         },
         {
-          "pattern": ["兑", "乐器"],
-          "description": "口+出声 → 吹奏乐器",
-          "candidates": [
-            {"item": "口琴/笛子/哨子", "min_confidence": 0.52, "validations": 0}
+          "pattern": [
+            "兑",
+            "羊"
+          ],
+          "description": "羊 的特征画像： 羊毛/毛绒",
+          "characteristics": [
+            "兑",
+            "羊"
+          ],
+          "references": [
+            "羊毛制品/毛绒玩具"
+          ]
+        },
+        {
+          "pattern": [
+            "兑",
+            "乐器"
+          ],
+          "description": "口+出声 的特征画像： 吹奏乐器",
+          "characteristics": [
+            "兑",
+            "乐器"
+          ],
+          "references": [
+            "口琴/笛子/哨子"
           ]
         }
       ],
-      "modern_objects": [
-        {"item": "耳机/耳塞/耳罩", "confidence": 0.90, "source": "兑=耳；第3轮完全命中", "validations": 1},
-        {"item": "金属小物件/钥匙/螺丝", "confidence": 0.62, "source": "兑=金+毁折", "validations": 0},
-        {"item": "杯子/碗/罐（开口容器）", "confidence": 0.65, "source": "兑=口", "validations": 0},
-        {"item": "牙刷/牙膏/口腔护理", "confidence": 0.55, "source": "兑=口+开", "validations": 0},
-        {"item": "口琴/笛子/哨子", "confidence": 0.50, "source": "兑=乐器", "validations": 0},
-        {"item": "创可贴/胶带", "confidence": 0.38, "source": "兑=毁折=修复", "validations": 0}
+      "reference_objects": [
+        {
+          "item": "耳机/耳塞/耳罩",
+          "confidence": 0.9,
+          "source": "兑=耳；第3轮完全命中",
+          "validations": 1,
+          "role": "reference"
+        },
+        {
+          "item": "金属小物件/钥匙/螺丝",
+          "confidence": 0.62,
+          "source": "兑=金+毁折",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "杯子/碗/罐（开口容器）",
+          "confidence": 0.65,
+          "source": "兑=口",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "牙刷/牙膏/口腔护理",
+          "confidence": 0.55,
+          "source": "兑=口+开",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "口琴/笛子/哨子",
+          "confidence": 0.5,
+          "source": "兑=乐器",
+          "validations": 0,
+          "role": "reference"
+        },
+        {
+          "item": "创可贴/胶带",
+          "confidence": 0.38,
+          "source": "兑=毁折=修复",
+          "validations": 0,
+          "role": "reference"
+        }
       ]
     }
   },
-
   "structural_signals": {
-
     "重卦_双体": {
       "rule": "上下卦相同时，首先考虑物品是否具有对称/重复/双体结构。重卦信号优先级 > 单卦物性映射。",
       "priority": "最高优先——在读取卦画默观(L1)时即触发",
       "confidence_weight": 1.5,
       "mappings": {
-        "乾为乾": {"structure": "双圆/双球/双重完整", "candidates": ["双球玩具", "双蛋", "一对圆物"]},
-        "坤为坤": {"structure": "双软/双层/重复柔性", "candidates": ["双层布", "毛巾", "多件软物叠放"]},
-        "震为震": {"structure": "双动/双启动/双发声", "candidates": ["双扬声器", "双震动物"]},
-        "巽为巽": {"structure": "双长条/双绳/双层入", "candidates": ["双筷子", "双笔", "两根长条并排"]},
-        "坎为坎": {"structure": "双陷/双弧/双中空", "candidates": ["双杯", "双碗", "一对弧形物"]},
-        "离为离": {"structure": "双壳/双透明/双外硬内虚", "candidates": ["双屏", "双壳手机", "两个透明容器"]},
-        "艮为艮": {"structure": "双硬体对称/双框/双环", "candidates": ["剪刀", "钳子", "夹子", "镊子"], "validations": 1, "note": "第5轮验证 ✅"},
-        "兑为兑": {"structure": "双口/双缺/双环", "candidates": ["双耳耳机", "双环手柄", "双开口容器"]}
+        "乾为乾": {
+          "structure": "双圆/双球/双重完整",
+          "candidates": [
+            "双球玩具",
+            "双蛋",
+            "一对圆物"
+          ]
+        },
+        "坤为坤": {
+          "structure": "双软/双层/重复柔性",
+          "candidates": [
+            "双层布",
+            "毛巾",
+            "多件软物叠放"
+          ]
+        },
+        "震为震": {
+          "structure": "双动/双启动/双发声",
+          "candidates": [
+            "双扬声器",
+            "双震动物"
+          ]
+        },
+        "巽为巽": {
+          "structure": "双长条/双绳/双层入",
+          "candidates": [
+            "双筷子",
+            "双笔",
+            "两根长条并排"
+          ]
+        },
+        "坎为坎": {
+          "structure": "双陷/双弧/双中空",
+          "candidates": [
+            "双杯",
+            "双碗",
+            "一对弧形物"
+          ]
+        },
+        "离为离": {
+          "structure": "双壳/双透明/双外硬内虚",
+          "candidates": [
+            "双屏",
+            "双壳手机",
+            "两个透明容器"
+          ]
+        },
+        "艮为艮": {
+          "structure": "双硬体对称/双框/双环",
+          "candidates": [
+            "剪刀",
+            "钳子",
+            "夹子",
+            "镊子"
+          ],
+          "validations": 1,
+          "note": "第5轮验证 ✅"
+        },
+        "兑为兑": {
+          "structure": "双口/双缺/双环",
+          "candidates": [
+            "双耳耳机",
+            "双环手柄",
+            "双开口容器"
+          ]
+        }
       }
     },
-
     "动爻位置": {
       "rule": "动爻位置对应物品的变化部位。动爻可能指示铰链/关节/折叠点/活动部件。",
       "mappings": {
-        "初爻": {"position": "底部/根部/基础", "meaning": "底座/脚/根基部分状态变化"},
-        "二爻": {"position": "下部/内部贴近底部", "meaning": "下半部变化"},
-        "三爻": {"position": "中下部/腰部", "meaning": "中下区域变化"},
-        "四爻": {"position": "中上部", "meaning": "中上区域变化"},
-        "五爻": {"position": "上部/顶部下方", "meaning": "上半部/接近顶端变化"},
-        "上爻": {"position": "顶部/尖端/最外层/末端", "meaning": "顶端动态(开合/可见/隐藏)", "special": "⚠️ 特别注意：可能是铰链/开合运动"}
+        "初爻": {
+          "position": "底部/根部/基础",
+          "meaning": "底座/脚/根基部分状态变化"
+        },
+        "二爻": {
+          "position": "下部/内部贴近底部",
+          "meaning": "下半部变化"
+        },
+        "三爻": {
+          "position": "中下部/腰部",
+          "meaning": "中下区域变化"
+        },
+        "四爻": {
+          "position": "中上部",
+          "meaning": "中上区域变化"
+        },
+        "五爻": {
+          "position": "上部/顶部下方",
+          "meaning": "上半部/接近顶端变化"
+        },
+        "上爻": {
+          "position": "顶部/尖端/最外层/末端",
+          "meaning": "顶端动态(开合/可见/隐藏)",
+          "special": "⚠️ 特别注意：可能是铰链/开合运动"
+        }
       },
       "阴阳变化含义": {
         "阳变阴": "硬→软 / 实→虚 / 闭→开 / 显→隐",
         "阴变阳": "软→硬 / 虚→实 / 开→闭 / 隐→显"
       }
     },
-
     "互体": {
       "rule": "互体揭示物品的内部结构或隐藏特征。用于补充和验证主卦推导，不作为第一候选依据。",
       "mappings": {
-        "坎在互体": {"meaning": "内部/中层有中空/液体/锋利/弧形特征"},
-        "震在互体": {"meaning": "核心/上部有动力/启动/植物/发声机制"},
-        "巽在互体": {"meaning": "下部/内部有细长/缠绕/渗透特征"},
-        "兑在互体": {"meaning": "中部/表层有开口/缺口/金属/耳/口特征"},
-        "离在互体": {"meaning": "中部有光/热/透明/中空/视觉特征"},
-        "艮在互体": {"meaning": "内部有硬质/固定/框状/指相关特征"},
-        "乾在互体": {"meaning": "核心有圆/金/健/独立特征"},
-        "坤在互体": {"meaning": "内部有柔软/包容/承载/大量特征"}
+        "坎在互体": {
+          "meaning": "内部/中层有中空/液体/锋利/弧形特征"
+        },
+        "震在互体": {
+          "meaning": "核心/上部有动力/启动/植物/发声机制"
+        },
+        "巽在互体": {
+          "meaning": "下部/内部有细长/缠绕/渗透特征"
+        },
+        "兑在互体": {
+          "meaning": "中部/表层有开口/缺口/金属/耳/口特征"
+        },
+        "离在互体": {
+          "meaning": "中部有光/热/透明/中空/视觉特征"
+        },
+        "艮在互体": {
+          "meaning": "内部有硬质/固定/框状/指相关特征"
+        },
+        "乾在互体": {
+          "meaning": "核心有圆/金/健/独立特征"
+        },
+        "坤在互体": {
+          "meaning": "内部有柔软/包容/承载/大量特征"
+        }
       }
     }
   },
-
   "color_system": {
     "八卦本色": {
-      "乾": {"五行": "金", "本色": "大赤(纯红)", "射覆色域": "红/金/银白/亮色/金属光泽"},
-      "坤": {"五行": "土", "本色": "黑", "射覆色域": "黑/黄/土色/棕褐/暗色"},
-      "震": {"五行": "木", "本色": "玄黄", "射覆色域": "黄绿/嫩绿/青绿/春色"},
-      "巽": {"五行": "木(柔)", "本色": "白", "射覆色域": "白/透明/浅色/素色"},
-      "坎": {"五行": "水", "本色": "赤(陷中之阳)", "射覆色域": "深红/暗红/黑红/蓝黑"},
-      "离": {"五行": "火", "本色": "(随所附)", "射覆色域": "红/橙/黄/暖色/亮色/或透明"},
-      "艮": {"五行": "土(阳)", "本色": "(土系)", "射覆色域": "黄/棕/褐/灰/陶土色"},
-      "兑": {"五行": "金", "本色": "(金系)", "射覆色域": "白/银/金色/亮金属色"}
+      "乾": {
+        "五行": "金",
+        "本色": "大赤(纯红)",
+        "射覆色域": "红/金/银白/亮色/金属光泽"
+      },
+      "坤": {
+        "五行": "土",
+        "本色": "黑",
+        "射覆色域": "黑/黄/土色/棕褐/暗色"
+      },
+      "震": {
+        "五行": "木",
+        "本色": "玄黄",
+        "射覆色域": "黄绿/嫩绿/青绿/春色"
+      },
+      "巽": {
+        "五行": "木(柔)",
+        "本色": "白",
+        "射覆色域": "白/透明/浅色/素色"
+      },
+      "坎": {
+        "五行": "水",
+        "本色": "赤(陷中之阳)",
+        "射覆色域": "深红/暗红/黑红/蓝黑"
+      },
+      "离": {
+        "五行": "火",
+        "本色": "(随所附)",
+        "射覆色域": "红/橙/黄/暖色/亮色/或透明"
+      },
+      "艮": {
+        "五行": "土(阳)",
+        "本色": "(土系)",
+        "射覆色域": "黄/棕/褐/灰/陶土色"
+      },
+      "兑": {
+        "五行": "金",
+        "本色": "(金系)",
+        "射覆色域": "白/银/金色/亮金属色"
+      }
     },
     "月建日建分配规则": {
       "rule": "月建=时间背景色→物品的外围/手接触部/外壳/手柄；日建=当日主导色→物品的主体/核心功能部/内部",
@@ -669,11 +1824,26 @@
       "validations": 1,
       "note": "第5轮验证：月建巳火→橙色手柄✅ 日建申金→银灰刀片✅",
       "天干参考": {
-        "甲乙": {"五行": "木", "色": "青/绿"},
-        "丙丁": {"五行": "火", "色": "红/橙"},
-        "戊己": {"五行": "土", "色": "黄/棕"},
-        "庚辛": {"五行": "金", "色": "白/银/金"},
-        "壬癸": {"五行": "水", "色": "黑/蓝/灰"}
+        "甲乙": {
+          "五行": "木",
+          "色": "青/绿"
+        },
+        "丙丁": {
+          "五行": "火",
+          "色": "红/橙"
+        },
+        "戊己": {
+          "五行": "土",
+          "色": "黄/棕"
+        },
+        "庚辛": {
+          "五行": "金",
+          "色": "白/银/金"
+        },
+        "壬癸": {
+          "五行": "水",
+          "色": "黑/蓝/灰"
+        }
       }
     },
     "多卦颜色运算": {
@@ -681,19 +1851,68 @@
       "example": "第4轮：离(红/黄)+兑(白/金)=主体暖色调+局部金属点缀(瓶盖金色)"
     }
   },
-
   "category_quadrants": {
     "十大品类": [
-      {"id": 1, "name": "点火/光源", "keywords": "打火机/火柴/灯/蜡烛", "trigram_signals": "离=火+震=启动"},
-      {"id": 2, "name": "电子/电力", "keywords": "充电器/电池/数据线/U盘/电源头", "trigram_signals": "坎=水=电+震=动"},
-      {"id": 3, "name": "个人佩戴", "keywords": "耳塞/耳机/眼镜/手表/戒指/项链", "trigram_signals": "兑=耳/离=目/乾=圆/艮=指"},
-      {"id": 4, "name": "容器/包装", "keywords": "杯/瓶/罐/碗/盒/桶/袋", "trigram_signals": "离=中空/坤=釜/坎=液体"},
-      {"id": 5, "name": "手动工具", "keywords": "剪/刀/钳/镊/锥/锯/尺/笔", "trigram_signals": "坎=锋利+艮=构件+震=动"},
-      {"id": 6, "name": "食品/植物", "keywords": "坚果/瓜子/水果/蔬菜/干果/茶叶", "trigram_signals": "震=种子+坤=众+艮=果蓏"},
-      {"id": 7, "name": "文具/办公", "keywords": "笔/本/橡皮/尺/订书机/回形针", "trigram_signals": "巽=长/兑=口/艮=石(砚台)"},
-      {"id": 8, "name": "厨具/餐具", "keywords": "勺/筷/叉/碗/盘/刀/铲", "trigram_signals": "兑=口/巽=木(筷)/坎=锋利(刀)"},
-      {"id": 9, "name": "饰品/小件", "keywords": "钥匙/扣/徽章/珠子/链/卡", "trigram_signals": "兑=金/乾=玉/艮=指(戒指)"},
-      {"id": 10, "name": "日化/药品", "keywords": "药/药盒/化妆品/洗护/香氛", "trigram_signals": "坎=隐伏/离=干燥/巽=渗透"}
+      {
+        "id": 1,
+        "name": "点火/光源",
+        "keywords": "打火机/火柴/灯/蜡烛",
+        "trigram_signals": "离=火+震=启动"
+      },
+      {
+        "id": 2,
+        "name": "电子/电力",
+        "keywords": "充电器/电池/数据线/U盘/电源头",
+        "trigram_signals": "坎=水=电+震=动"
+      },
+      {
+        "id": 3,
+        "name": "个人佩戴",
+        "keywords": "耳塞/耳机/眼镜/手表/戒指/项链",
+        "trigram_signals": "兑=耳/离=目/乾=圆/艮=指"
+      },
+      {
+        "id": 4,
+        "name": "容器/包装",
+        "keywords": "杯/瓶/罐/碗/盒/桶/袋",
+        "trigram_signals": "离=中空/坤=釜/坎=液体"
+      },
+      {
+        "id": 5,
+        "name": "手动工具",
+        "keywords": "剪/刀/钳/镊/锥/锯/尺/笔",
+        "trigram_signals": "坎=锋利+艮=构件+震=动"
+      },
+      {
+        "id": 6,
+        "name": "食品/植物",
+        "keywords": "坚果/瓜子/水果/蔬菜/干果/茶叶",
+        "trigram_signals": "震=种子+坤=众+艮=果蓏"
+      },
+      {
+        "id": 7,
+        "name": "文具/办公",
+        "keywords": "笔/本/橡皮/尺/订书机/回形针",
+        "trigram_signals": "巽=长/兑=口/艮=石(砚台)"
+      },
+      {
+        "id": 8,
+        "name": "厨具/餐具",
+        "keywords": "勺/筷/叉/碗/盘/刀/铲",
+        "trigram_signals": "兑=口/巽=木(筷)/坎=锋利(刀)"
+      },
+      {
+        "id": 9,
+        "name": "饰品/小件",
+        "keywords": "钥匙/扣/徽章/珠子/链/卡",
+        "trigram_signals": "兑=金/乾=玉/艮=指(戒指)"
+      },
+      {
+        "id": 10,
+        "name": "日化/药品",
+        "keywords": "药/药盒/化妆品/洗护/香氛",
+        "trigram_signals": "坎=隐伏/离=干燥/巽=渗透"
+      }
     ],
     "卦象反向索引": {
       "坎": "电子配件、液体容器、锐利工具、隐伏存储",
@@ -706,12 +1925,19 @@
       "坤": "织物袋、陶瓷容器、粉末、多件集、底座"
     }
   },
-
   "static_vs_moving_gua": {
     "静卦": {
       "特征": "无动爻，物品处于稳定/完整/不自变的状态",
-      "倾向物品": ["被动存在的物品", "容器/盛放物", "固定摆件/装饰", "自然产物(石头/果实/矿物)"],
-      "排除物品": ["电子设备(通常有开关态)", "工具(通常有使用/闲置动作)"],
+      "倾向物品": [
+        "被动存在的物品",
+        "容器/盛放物",
+        "固定摆件/装饰",
+        "自然产物(石头/果实/矿物)"
+      ],
+      "排除物品": [
+        "电子设备(通常有开关态)",
+        "工具(通常有使用/闲置动作)"
+      ],
       "注意": "不完全绝对，需结合卦象综合判断"
     },
     "动卦": {
@@ -723,7 +1949,6 @@
       }
     }
   },
-
   "validation_log": [
     {
       "round": 1,
@@ -732,20 +1957,40 @@
       "动爻": null,
       "实际物品": "红色打火机",
       "品类": "点火/光源",
-      "AI候选": ["杯子", "手机", "石头"],
+      "AI候选": [
+        "杯子",
+        "手机",
+        "石头"
+      ],
       "命中": false,
       "命中信号": [],
       "遗漏信号": [
-        {"卦": "离", "维度": "火/光明", "物品对应": "打火机=点火器", "已加入": true},
-        {"卦": "震", "维度": "启动", "物品对应": "打火机=启动燃烧", "已加入": true}
+        {
+          "卦": "离",
+          "维度": "火/光明",
+          "物品对应": "打火机=点火器",
+          "已加入": true
+        },
+        {
+          "卦": "震",
+          "维度": "启动",
+          "物品对应": "打火机=启动燃烧",
+          "已加入": true
+        }
       ],
       "错误信号": [],
       "核心教训": "离=火信号不敢大胆推。泽雷随互体含离但未被使用。",
       "类象库更新": {
         "confirmed": [],
-        "new_discovery": ["离=火→打火机(confidence 0.65)"],
+        "new_discovery": [
+          "离=火→打火机(confidence 0.65)"
+        ],
         "confidence_adjustments": [
-          {"trigram": "离", "dimension": "火/光明", "delta": "+0.05"}
+          {
+            "trigram": "离",
+            "dimension": "火/光明",
+            "delta": "+0.05"
+          }
         ]
       }
     },
@@ -756,22 +2001,45 @@
       "动爻": 5,
       "实际物品": "白色充电头",
       "品类": "电子/电力",
-      "AI候选": ["钥匙", "充电宝"],
+      "AI候选": [
+        "钥匙",
+        "充电宝"
+      ],
       "命中": "邻",
       "命中信号": [
-        {"卦": "坎", "维度": "水=电流", "物品对应": "充电=电流, 但当时映射未建立"}
+        {
+          "卦": "坎",
+          "维度": "水=电流",
+          "物品对应": "充电=电流, 但当时映射未建立"
+        }
       ],
       "遗漏信号": [
-        {"卦": "震", "维度": "动=充电初动", "物品对应": "充电=电流初动", "已加入": true},
-        {"卦": "离", "维度": "颜色", "物品对应": "白色", "已加入": false}
+        {
+          "卦": "震",
+          "维度": "动=充电初动",
+          "物品对应": "充电=电流初动",
+          "已加入": true
+        },
+        {
+          "卦": "离",
+          "维度": "颜色",
+          "物品对应": "白色",
+          "已加入": false
+        }
       ],
       "错误信号": [],
       "核心教训": "坎=电映射尚未建立。（已修复：v0.3类象库中坎=电 confidence 0.65→0.72）",
       "类象库更新": {
-        "confirmed": ["坎=电→充电器(confidence 从0.65升至0.72)"],
+        "confirmed": [
+          "坎=电→充电器(confidence 从0.65升至0.72)"
+        ],
         "new_discovery": [],
         "confidence_adjustments": [
-          {"trigram": "坎", "dimension": "导电/电流", "delta": "+0.07"}
+          {
+            "trigram": "坎",
+            "dimension": "导电/电流",
+            "delta": "+0.07"
+          }
         ]
       }
     },
@@ -782,24 +2050,53 @@
       "动爻": 3,
       "实际物品": "黄色泡沫耳塞",
       "品类": "个人佩戴",
-      "AI候选": ["耳机", "眼镜", "手表"],
+      "AI候选": [
+        "耳机",
+        "眼镜",
+        "手表"
+      ],
       "命中": true,
       "命中信号": [
-        {"卦": "兑", "维度": "耳(听觉入口)", "物品对应": "耳塞=入耳", "confidence": 0.90},
-        {"卦": "震", "维度": "大壮→归妹=壮盛→归位", "物品对应": "耳塞=从外归入耳内"}
+        {
+          "卦": "兑",
+          "维度": "耳(听觉入口)",
+          "物品对应": "耳塞=入耳",
+          "confidence": 0.9
+        },
+        {
+          "卦": "震",
+          "维度": "大壮→归妹=壮盛→归位",
+          "物品对应": "耳塞=从外归入耳内"
+        }
       ],
       "遗漏信号": [
-        {"卦": "震", "维度": "颜色=玄黄/黄绿", "物品对应": "黄色泡沫", "已加入": true}
+        {
+          "卦": "震",
+          "维度": "颜色=玄黄/黄绿",
+          "物品对应": "黄色泡沫",
+          "已加入": true
+        }
       ],
       "错误信号": [
-        {"卦": "乾", "维度": "材质=金属", "推测": "硬质", "实际": "软泡沫(错)"}
+        {
+          "卦": "乾",
+          "维度": "材质=金属",
+          "推测": "硬质",
+          "实际": "软泡沫(错)"
+        }
       ],
       "核心教训": "兑=耳映射100%命中。材质(硬→软)和颜色(银→黄)仍错。乾=硬是现代材质绑定问题。",
       "类象库更新": {
-        "confirmed": ["兑=耳→耳塞(confidence 0.90)"],
+        "confirmed": [
+          "兑=耳→耳塞(confidence 0.90)"
+        ],
         "new_discovery": [],
         "confidence_adjustments": [
-          {"trigram": "兑", "dimension": "耳", "delta": "+0.10"}
+          {
+            "trigram": "兑",
+            "dimension": "耳",
+            "delta": "+0.10"
+          }
         ]
       }
     },
@@ -810,27 +2107,71 @@
       "动爻": null,
       "实际物品": "树脂瓶+金盖+瓜子",
       "品类": "容器/包装+食品/植物",
-      "AI候选": ["书", "杯子", "蜡烛"],
+      "AI候选": [
+        "书",
+        "杯子",
+        "蜡烛"
+      ],
       "命中": "邻",
       "命中信号": [
-        {"卦": "离", "维度": "透明+中空", "物品对应": "树脂瓶=透明容器", "已加入": true},
-        {"卦": "震", "维度": "种子/坚果", "物品对应": "瓜子", "已加入": true},
-        {"卦": "兑", "维度": "金", "物品对应": "金盖", "已加入": true}
+        {
+          "卦": "离",
+          "维度": "透明+中空",
+          "物品对应": "树脂瓶=透明容器",
+          "已加入": true
+        },
+        {
+          "卦": "震",
+          "维度": "种子/坚果",
+          "物品对应": "瓜子",
+          "已加入": true
+        },
+        {
+          "卦": "兑",
+          "维度": "金",
+          "物品对应": "金盖",
+          "已加入": true
+        }
       ],
       "遗漏信号": [
-        {"卦": "离", "维度": "大腹=容器, 但被误解为阅读/火", "物品对应": "瓶子", "已加入": true}
+        {
+          "卦": "离",
+          "维度": "大腹=容器, 但被误解为阅读/火",
+          "物品对应": "瓶子",
+          "已加入": true
+        }
       ],
       "错误信号": [
-        {"卦": "离", "维度": "多义性→优先选了'目=阅读'而非'大腹=容器'"}
+        {
+          "卦": "离",
+          "维度": "多义性→优先选了'目=阅读'而非'大腹=容器'"
+        }
       ],
       "核心教训": "离的多义性导致方向错误(选目→书而非大腹→瓶)。震=种子是全新发现。颜色叠加不会算。",
       "类象库更新": {
-        "confirmed": ["离=透明+中空→透明瓶(confidence 0.70)", "震=种子→瓜子(confidence 0.70)"],
-        "new_discovery": ["震=种子/坚果/食品(新增映射)"],
+        "confirmed": [
+          "离=透明+中空→透明瓶(confidence 0.70)",
+          "震=种子→瓜子(confidence 0.70)"
+        ],
+        "new_discovery": [
+          "震=种子/坚果/食品(新增映射)"
+        ],
         "confidence_adjustments": [
-          {"trigram": "离", "dimension": "透明/中空", "delta": "+0.08"},
-          {"trigram": "震", "dimension": "种子/坚果", "delta": "+0.10"},
-          {"trigram": "兑", "dimension": "金/金属色", "delta": "+0.05"}
+          {
+            "trigram": "离",
+            "dimension": "透明/中空",
+            "delta": "+0.08"
+          },
+          {
+            "trigram": "震",
+            "dimension": "种子/坚果",
+            "delta": "+0.10"
+          },
+          {
+            "trigram": "兑",
+            "dimension": "金/金属色",
+            "delta": "+0.05"
+          }
         ]
       }
     },
@@ -841,43 +2182,108 @@
       "动爻": "上六阳→阴",
       "实际物品": "橙色柄剪刀",
       "品类": "手动工具",
-      "AI候选": ["杯子", "花盆", "砚台"],
+      "AI候选": [
+        "杯子",
+        "花盆",
+        "砚台"
+      ],
       "命中": false,
       "命中信号": [
-        {"卦": "艮", "维度": "重卦=双体对称", "物品对应": "剪刀双刃体", "confidence": 0.80},
-        {"卦": "艮", "维度": "门阙=框状/双环", "物品对应": "剪刀双环手柄", "confidence": 0.78},
-        {"卦": "坎", "维度": "互体中=锋利", "物品对应": "剪刀刀片", "confidence": 0.70},
-        {"卦": "上爻", "维度": "动=铰链开合", "物品对应": "剪刀铰链", "confidence": 0.65}
+        {
+          "卦": "艮",
+          "维度": "重卦=双体对称",
+          "物品对应": "剪刀双刃体",
+          "confidence": 0.8
+        },
+        {
+          "卦": "艮",
+          "维度": "门阙=框状/双环",
+          "物品对应": "剪刀双环手柄",
+          "confidence": 0.78
+        },
+        {
+          "卦": "坎",
+          "维度": "互体中=锋利",
+          "物品对应": "剪刀刀片",
+          "confidence": 0.7
+        },
+        {
+          "卦": "上爻",
+          "维度": "动=铰链开合",
+          "物品对应": "剪刀铰链",
+          "confidence": 0.65
+        }
       ],
       "遗漏信号": [
-        {"卦": "艮", "维度": "门阙→双环; 当时映射面太窄", "已加入": true},
-        {"卦": "坎", "维度": "互体含坎=锋利; 当时候选未激活工具类", "已加入": true}
+        {
+          "卦": "艮",
+          "维度": "门阙→双环; 当时映射面太窄",
+          "已加入": true
+        },
+        {
+          "卦": "坎",
+          "维度": "互体含坎=锋利; 当时候选未激活工具类",
+          "已加入": true
+        }
       ],
       "错误信号": [
-        {"卦": "艮", "维度": "止+石→推到了砚台/花盆, 未走门阙+双体方向"}
+        {
+          "卦": "艮",
+          "维度": "止+石→推到了砚台/花盆, 未走门阙+双体方向"
+        }
       ],
       "核心教训": "重卦结构信号正确但选错了艮的多义方向。工具有盲区。动爻→机械运动映射未建立。",
       "类象库更新": {
-        "confirmed": ["艮=门阙+双体→剪刀(confidence 0.78→0.80)", "坎=锋利→刀片(confidence +0.08)"],
-        "new_discovery": ["上爻动=铰链开合(新增规则)"],
+        "confirmed": [
+          "艮=门阙+双体→剪刀(confidence 0.78→0.80)",
+          "坎=锋利→刀片(confidence +0.08)"
+        ],
+        "new_discovery": [
+          "上爻动=铰链开合(新增规则)"
+        ],
         "confidence_adjustments": [
-          {"trigram": "艮", "dimension": "门阙/框状", "delta": "+0.08"},
-          {"trigram": "艮", "dimension": "双体对称", "delta": "+0.05"},
-          {"trigram": "坎", "dimension": "锋利/险", "delta": "+0.05"},
-          {"structural": "上爻动=铰链", "delta": "+0.10"}
+          {
+            "trigram": "艮",
+            "dimension": "门阙/框状",
+            "delta": "+0.08"
+          },
+          {
+            "trigram": "艮",
+            "dimension": "双体对称",
+            "delta": "+0.05"
+          },
+          {
+            "trigram": "坎",
+            "dimension": "锋利/险",
+            "delta": "+0.05"
+          },
+          {
+            "structural": "上爻动=铰链",
+            "delta": "+0.10"
+          }
         ]
       }
     }
   ],
-
   "联想冷却规则": {
-    "rule": "从功能态推出第一层落处后立即停顿。给出3-5个并列候选(古代+现代混合)。禁止在候选上继续叠加'如果是A那可能还带有X'。",
+    "rule": "从功能态推出第一层特征后立即停顿。给出各维度的特征描述与置信度。物品名称仅作参考供玩家联想。禁止在某个维度上继续叠加推论。",
     "forbidden": "链式联想：离→中空→罐子→装东西→食品罐",
-    "correct": "离→中空有容→候选：杯子/瓶子/容器/手机壳 【停】"
+    "correct": "离→中空有容→特征画像：中空壳状结构 🟢 / 可能含视觉元素 🟡 【停，交给玩家判断】"
   },
-
   "离与坎的关键区分": {
-    "离": {"中空含义": "外硬内虚(壳状结构)", "水相关": "不直接关联", "电相关": "电光/闪电(瞬时)", "锋利": "戈兵(攻击性)", "视觉": "目/看见/明亮"},
-    "坎": {"中空含义": "内部空虚(可填充空间)", "水相关": "直接=水/液", "电相关": "电流/水流(持续)", "锋利": "险/切割(工具性)", "视觉": "隐伏/不可见"}
+    "离": {
+      "中空含义": "外硬内虚(壳状结构)",
+      "水相关": "不直接关联",
+      "电相关": "电光/闪电(瞬时)",
+      "锋利": "戈兵(攻击性)",
+      "视觉": "目/看见/明亮"
+    },
+    "坎": {
+      "中空含义": "内部空虚(可填充空间)",
+      "水相关": "直接=水/液",
+      "电相关": "电流/水流(持续)",
+      "锋利": "险/切割(工具性)",
+      "视觉": "隐伏/不可见"
+    }
   }
 }
