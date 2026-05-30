@@ -1,2 +1,3 @@
 .clawhub/origin.json
 .clawhub/lock.json
+__pycache__/
