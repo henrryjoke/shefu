@@ -1,57 +1,84 @@
 {
   "_meta": {
-    "version": "0.4.0",
+    "version": "0.4.1",
     "updated": "2026-06-01",
     "type": "落处定义",
-    "description": "市场落处——从气的态势投射到金融市场维度",
-    "status": "stub"
+    "description": "市场落处——从气的态势投射到金融市场维度（受控模式）",
+    "status": "restricted"
   },
   "name": "市场",
   "slug": "shichang",
-  "description": "针对金融市场场景，气的态势投射到方向/多空/量能/时机四个维度。",
+  "description": "针对金融市场场景，气的态势投射到方向/多空/量能/时机四个维度。默认受控模式，仅输出卦象分析与类象参考表。",
   "triggers": ["看股票", "问行情", "市场预测", "行情起卦", "market divination", "stock prediction"],
+  "compliance": {
+    "restricted_by_default": true,
+    "risk_category": "financial",
+    "default_mode": "analysis_only",
+    "output_rules": {
+      "always_show": [
+        "qiflow_description",
+        "trigram_reference_table",
+        "structured_questions",
+        "disclaimer"
+      ],
+      "never_show_by_default": [
+        "directional_prediction",
+        "timing_prediction",
+        "sentiment_assertion"
+      ],
+      "show_after_opt_in": [
+        "full_portrait"
+      ]
+    },
+    "opt_in_phrases": ["我要看结论", "展开分析", "我自己判断"],
+    "disclaimers": {
+      "default": "以上为卦象展开的易学推演，不构成任何投资建议。金融市场受多重因素影响，请结合自身判断独立决策。",
+      "full_mode": "以下画像仅为卦象视角的一种解读可能。金融市场受多重因素影响，请结合自身判断独立决策。"
+    },
+    "trigram_reference_phrasing": "reference_only"
+  },
   "dimensions": {
     "方向": {
-      "description": "市场整体方向趋势",
+      "description": "市场整体方向趋势（受控模式下仅提供参考方向，不做多空断言）",
       "trigram_mapping": {
-        "乾": "强势上行/独立行情",
-        "坤": "横盘/震荡/底部承接",
-        "震": "突发拉升/反转信号",
-        "巽": "缓慢渗透/暗流",
-        "坎": "下跌/陷入/破位",
-        "离": "依附热点/跟风",
-        "艮": "停滞/横盘整理",
-        "兑": "冲高回落/开口向下"
+        "乾": "刚健上行趋向",
+        "坤": "顺承/横盘/底部承接趋向",
+        "震": "突发变动/反转趋向",
+        "巽": "缓慢渗透/暗流动向",
+        "坎": "陷落/破位趋向下行",
+        "离": "依附热点/跟风趋向",
+        "艮": "停滞/横盘整理趋向",
+        "兑": "冲高回落/开口向下趋向"
       }
     },
     "多空": {
-      "description": "多空力量对比",
+      "description": "多空力量对比（受控模式下仅提供力量分布参考，不做多空判断）",
       "trigram_mapping": {
-        "乾": "多方绝对优势",
-        "坤": "空方优势但温和",
-        "震": "多方突袭",
+        "乾": "多方力量较强",
+        "坤": "空方占优但温和",
+        "震": "多方突发变动",
         "巽": "空方暗中渗透",
-        "坎": "空方陷阱/多头被套",
+        "坎": "空方陷阱/多头压力",
         "离": "多空交织/依附大势",
-        "艮": "多空平衡/观望",
-        "兑": "空方宣泄/恐慌抛售"
+        "艮": "多空平衡/观望态势",
+        "兑": "空方释放/抛售压力"
       }
     },
     "量能": {
-      "description": "成交量/活跃度",
+      "description": "成交量/活跃度参考",
       "trigram_mapping": {
-        "乾": "缩量/独立运行",
-        "坤": "温和放量/平稳",
-        "震": "放量拉升/天量",
-        "巽": "缩量阴跌/暗流",
-        "坎": "放量下跌/恐慌",
-        "离": "热点放量/跟风盘",
-        "艮": "地量/无人问津",
-        "兑": "冲量回落/天量天价"
+        "乾": "缩量/独立运行趋向",
+        "坤": "温和放量/平稳趋向",
+        "震": "放量变动/天量趋向",
+        "巽": "缩量缓行/暗流趋向",
+        "坎": "放量下行/恐慌趋向",
+        "离": "热点放量/跟风盘趋向",
+        "艮": "地量/交投清淡趋向",
+        "兑": "冲量回落/放量见顶趋向"
       }
     },
     "时机": {
-      "description": "入场/出场时机",
+      "description": "入场/出场时机参考（不构成操作建议）",
       "source": "动爻→变盘点 + 消息卦→趋势阶段 + 月建→有利/不利"
     }
   },
@@ -60,8 +87,8 @@
     {"question": "时间框架", "options": ["日内", "短线/周内", "中线/月内", "长线/季度"]}
   ],
   "knowledge_base": null,
-  "output_template": "市场态势画像",
-  "interaction_flow": "S1态势初判→S2细节展开→S3时机提示",
+  "output_template": "受控模式：卦象分析 + 类象参考表 + 引导问题 + 合规声明",
+  "interaction_flow": "S1态势初判（受控输出）→ S2引导提问 → [用户opt-in] → S3完整画像",
   "hint_mechanism": false,
   "confidence_tiers": true,
   "disclaimer": "市场画像仅为卦象展开的可能性推演，不构成任何投资建议。金融市场受多重因素影响，卦象只是其中一个维度的参考。"

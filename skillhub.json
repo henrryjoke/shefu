@@ -1,0 +1,12 @@
+{
+  "name": "谛观·卦脉解读",
+  "slug": "shefu",
+  "version": "0.4.1",
+  "description": "以麻衣道者《正易心法》卦脉法从六爻结构中读取气的态势，支持射覆猜物、问事推演、考试、天气、市场等多落处投射。敏感领域默认受控模式。",
+  "author": "谛观",
+  "tags": ["易学", "易经", "占卜", "射覆", "传统文化", "卦象分析"],
+  "license": "MIT (code) / CC BY-NC-SA 4.0 (data)",
+  "repo": "https://github.com/henrryjoke/shefu",
+  "branch": "skillhub",
+  "min_agent_version": "1.0.0"
+}
