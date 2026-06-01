@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.1] — 2026-06-01
+
+### Added — SkillHub 适配 + 合规防护机制
+- **合规防护机制**：
+  - 新增 SKILL.md §合规防护机制章节
+  - 两层输出模式：受控模式（默认，仅卦象分析）/ 完整模式（需用户 opt-in）
+  - 市场落处 trigram_mapping 改为参考描述（趋向/态势），非断言式预测
+  - 市场.json 新增 `compliance` 字段（output_rules / opt_in / disclaimers）
+  - 预留健康/法律敏感域接口
+
+### Changed — SkillHub 分支适配
+- SKILL.md 前页改为 SkillHub 格式（name/description/tags/version/author/license）
+- references/ 9 个文件名全部转为 ASCII（中文 → 英文/拼音）
+- 新增 skillhub.json 平台元数据文件
+
+### Removed — 平台专属清理
+- 删除 WorkBuddy 专属文件：_meta.json / config.json
+- 删除 ClawHub 专属：.clawhub/
+- 删除 Coze 适配目录：coze/
+
 ## [0.4.0] — 2026-06-01
 
 ### Changed — 多落处架构重构
