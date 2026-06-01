@@ -1,0 +1,80 @@
+{
+  "_meta": {
+    "version": "0.4.0",
+    "updated": "2026-06-01",
+    "type": "落处定义",
+    "description": "射覆落处——猜物之卦，从气的态势投射到物品特征画像"
+  },
+  "name": "射覆",
+  "slug": "shefu",
+  "description": "一人藏物于覆器之下，另一人起卦推测覆下为何物。气的态势投射到物品的六个维度，渐进精化特征画像。",
+  "triggers": ["射覆", "玩射覆", "猜一猜", "帮我猜", "射覆起卦", "shefu", "hexagram guessing", "object divination"],
+  "dimensions": {
+    "材质": {
+      "description": "物品的材料构成",
+      "trigram_mapping": {
+        "乾": "金属/合金/硬质",
+        "坤": "泥土/布料/柔性",
+        "震": "木质/种子/植物",
+        "巽": "纤维/绳线/柔性木质",
+        "坎": "液体/金属弧形/导电",
+        "离": "透明/玻璃/有壳",
+        "艮": "石/陶瓷/硬土",
+        "兑": "金属/矿物/亮面"
+      }
+    },
+    "形态": {
+      "description": "物品的形状与外观",
+      "trigram_mapping": {
+        "乾": "圆形/球形/完整",
+        "坤": "平铺/大面积/中空",
+        "震": "长条/从下伸展/颗粒",
+        "巽": "细长/线状/可弯曲",
+        "坎": "弧形/中空/锋刃",
+        "离": "中空/壳状/扁平",
+        "艮": "块状/框状/双体对称",
+        "兑": "开口/缺口/环形"
+      }
+    },
+    "功能": {
+      "description": "物品的功能与用途",
+      "trigram_mapping": {
+        "乾": "独立/自完/恒动",
+        "坤": "包容/承载/收纳",
+        "震": "启动/发声/生机",
+        "巽": "渗透/缠绕/精细",
+        "坎": "陷/险/锋利/导电",
+        "离": "火/光/视觉/容纳",
+        "艮": "静止/固定/守住",
+        "兑": "开口/听觉/愉悦"
+      }
+    },
+    "结构": {
+      "description": "物品的内部结构与组成方式",
+      "source": "signal_combinations + structural_signals in 类象库.json"
+    },
+    "颜色": {
+      "description": "物品的颜色特征",
+      "source": "color_system in 类象库.json"
+    },
+    "尺寸": {
+      "description": "物品的大小级别",
+      "discriminative_questions": [
+        {"question": "大小", "options": ["掌心级", "桌面级", "地面级"]},
+        {"question": "重量", "options": ["轻飘飘", "有分量", "沉手"]}
+      ]
+    }
+  },
+  "discriminative_questions": [
+    {"question": "大小", "options": ["掌心级", "桌面级", "地面级"]},
+    {"question": "重量", "options": ["轻飘飘", "有分量", "沉手"]},
+    {"question": "触感", "options": ["光滑", "粗糙", "软", "硬"]},
+    {"question": "场景", "options": ["桌上", "口袋", "手里", "包里"]}
+  ],
+  "knowledge_base": "data/类象库.json",
+  "output_template": "特征画像",
+  "interaction_flow": "S1画像→S2渐进精化→S3复盘",
+  "hint_mechanism": true,
+  "confidence_tiers": true,
+  "history_note": "v0.3.0之前的射覆逻辑完整保留，此文件仅为落处定义元数据"
+}

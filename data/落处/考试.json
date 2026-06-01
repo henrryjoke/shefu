@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "version": "0.4.0",
+    "updated": "2026-06-01",
+    "type": "落处定义",
+    "description": "考试落处——从气的态势投射到考试维度",
+    "status": "stub"
+  },
+  "name": "考试",
+  "slug": "kaoshi",
+  "description": "针对考试场景，气的态势投射到准备/竞争/发挥/时机四个维度。",
+  "triggers": ["问考试", "考试运势", "考试推演", "考试起卦", "exam divination"],
+  "dimensions": {
+    "准备": {
+      "description": "备考充分程度",
+      "trigram_mapping": {
+        "乾": "自主性强/基础扎实",
+        "坤": "按部就班/扎实但保守",
+        "震": "突击型/短期发力",
+        "巽": "渗透式/细节到位",
+        "坎": "有盲区/需突破",
+        "离": "依附资料/借力复习",
+        "艮": "停滞/需重新启动",
+        "兑": "交流讨论/互助学习"
+      }
+    },
+    "竞争": {
+      "description": "竞争环境激烈程度",
+      "trigram_mapping": {
+        "乾": "强手如林/自己也是强者",
+        "坤": "温和/录取比例高",
+        "震": "意外竞争/黑马",
+        "巽": "暗流/信息差竞争",
+        "坎": "陷阱题/高淘汰率",
+        "离": "热门/关注度高",
+        "艮": "门槛型/一考定音",
+        "兑": "面试型/表达决定"
+      }
+    },
+    "发挥": {
+      "description": "临场发挥水平",
+      "source": "动爻位置→哪个环节可能出状况"
+    },
+    "时机": {
+      "description": "是否在上升期/有利时段",
+      "source": "消息卦→趋势阶段 + 月建旺相"
+    }
+  },
+  "discriminative_questions": [
+    {"question": "考试类型", "options": ["笔试", "面试", "实操", "综合"]},
+    {"question": "考试距离", "options": ["一周内", "一月内", "三个月内"]}
+  ],
+  "knowledge_base": null,
+  "output_template": "考试态势画像",
+  "interaction_flow": "S1考试态势初判→S2细节展开→S3建议",
+  "hint_mechanism": false,
+  "confidence_tiers": true
+}

@@ -1,14 +1,21 @@
 {
-  "name": "谛观·射覆 | Shefu Hexagram Analysis",
+  "name": "谛观·卦脉解读 | Shefu Multi-Domain Oracle",
   "slug": "shefu",
-  "description": "「谛观」出品：基于正易心法的卦脉解读技能。默认大衍筮法起卦（模拟蓍草四营十八变），支持梅花易数和六爻纳甲。从卦画结构直接读取气的态势，渐进精化物品特征画像，辅助玩家自行判断。AI是画师不是鉴定师——刻画特征，命名权交给玩家。包含起卦引擎、特征画像、渐进精化、变复校验四层分析链路。不判断吉凶，不替玩家命名。",
-  "description_en": "Feature-portrait based hexagram analysis using Zheng Yi Xin Fa. Default Dayan Yarrow Method casting (simulating 49-stalk divination), with Plum Blossom and Six-Yao with Najia as alternatives. Reads qi dynamics from hexagram structures and progressively refines a feature portrait of the hidden object — the AI paints the portrait, the player names it. Four analysis layers: casting, feature extraction, progressive refinement, change-return verification. Does not make fortune-telling verdicts or name objects.",
-  "version": "0.3.0",
+  "description": "「谛观」出品：正易心法卦脉解读引擎，核心管道领域无关，支持多落处投射。v0.4.0 落处：射覆（猜物特征画像）/问事（态势推演画像）/考试/天气/市场。默认大衍筮法起卦，支持梅花易数和六爻纳甲。不判断吉凶，只展开可能性。",
+  "description_en": "Multi-domain hexagram oracle by Diguan. Core pipeline is domain-agnostic, supporting pluggable landing domains. v0.4.0 domains: Shefu (object feature portrait) / Wenshi (situation deduction) / Exam / Weather / Market. Default Dayan Yarrow casting, with Plum Blossom and Six-Yao as alternatives. No fortune-telling—only unfolding possibilities.",
+  "version": "0.4.0",
   "homepage": "https://github.com/henrryjoke/shefu",
   "categories": ["术数", "传统文化", "AI增强", "易学"],
   "categories_en": ["Divination", "Chinese Culture", "AI Enhancement", "I Ching"],
-  "tags": ["shefu", "iching", "hexagram", "kunyu", "guamai", "bagua", "divination", "symbolic-analysis", "meihua", "liuyao", "najia", "plum-blossom"],
-  "triggers": ["射覆", "玩射覆", "猜一猜", "帮我猜", "算一算", "占卦", "测算", "预测", "卦脉", "解卦", "正易心法", "问卦", "卜问", "起卦", "起一卦", "摇卦", "摇一卦", "梅花易数", "梅花起卦", "六爻", "六爻起卦", "六爻纳甲", "纳甲", "铜钱起卦", "hexagram analysis", "shefu", "iching reading", "meihua yishu", "liuyao", "najia divination"],
+  "tags": ["shefu", "iching", "hexagram", "guamai", "bagua", "divination", "object-guessing", "feature-portrait", "multi-domain", "meihua", "liuyao", "najia", "wenshi", "market", "weather", "exam"],
+  "triggers": [
+    "射覆", "玩射覆", "猜一猜", "帮我猜", "射覆起卦",
+    "问事", "解卦", "推演一下", "算一卦", "起卦", "问卦", "卜问",
+    "问考试", "考试运势",
+    "看天气", "明天天气",
+    "看股票", "问行情",
+    "shefu", "hexagram guessing", "object divination", "hexagram reading", "iching reading", "divination"
+  ],
   "dependencies": [],
   "author": {"name": "henrryjoke", "email": ""},
   "license": {"code": "MIT", "data": "CC BY-NC-SA 4.0"}

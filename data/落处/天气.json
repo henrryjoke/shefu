@@ -1,0 +1,67 @@
+{
+  "_meta": {
+    "version": "0.4.0",
+    "updated": "2026-06-01",
+    "type": "落处定义",
+    "description": "天气落处——从气的态势投射到气象维度",
+    "status": "stub"
+  },
+  "name": "天气",
+  "slug": "tianqi",
+  "description": "针对天气场景，气的态势投射到温度/晴雨/风势/稳定四个维度。",
+  "triggers": ["看天气", "天气预测", "明天天气", "天气起卦", "weather divination"],
+  "dimensions": {
+    "温度": {
+      "description": "气温冷热趋势",
+      "trigram_mapping": {
+        "乾": "寒冷/降温",
+        "坤": "温和/平稳",
+        "震": "骤变/雷暴降温",
+        "巽": "渐变/微风降温",
+        "坎": "寒冷/水气重",
+        "离": "炎热/高温",
+        "艮": "稳定/温差大",
+        "兑": "凉爽/温差"
+      }
+    },
+    "晴雨": {
+      "description": "天气晴雨状况",
+      "trigram_mapping": {
+        "乾": "晴/干燥",
+        "坤": "阴/多云",
+        "震": "雷阵雨/突发",
+        "巽": "阴转雨/渐变",
+        "坎": "雨/潮湿",
+        "离": "晴/干旱",
+        "艮": "阴/持续",
+        "兑": "阵雨/间歇"
+      }
+    },
+    "风势": {
+      "description": "风力与风向",
+      "trigram_mapping": {
+        "巽": "大风/持续",
+        "震": "阵风/雷暴风",
+        "乾": "西北风/干冷",
+        "坎": "北风/湿冷",
+        "离": "南风/暖湿",
+        "坤": "微风/平稳",
+        "艮": "无风/静稳",
+        "兑": "西风/凉爽"
+      }
+    },
+    "稳定": {
+      "description": "天气稳定性",
+      "source": "动静+消息卦→天气变化频率"
+    }
+  },
+  "discriminative_questions": [
+    {"question": "地区", "options": ["南方", "北方", "沿海", "内陆"]},
+    {"question": "季节", "options": ["春", "夏", "秋", "冬"]}
+  ],
+  "knowledge_base": null,
+  "output_template": "气象特征画像",
+  "interaction_flow": "S1气象初判→S2细节展开→S3趋势",
+  "hint_mechanism": false,
+  "confidence_tiers": true
+}

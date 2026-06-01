@@ -1,3 +1,4 @@
 .clawhub/origin.json
 .clawhub/lock.json
 __pycache__/
+skill_refs.txt
