@@ -1,6 +1,9 @@
 ---
 name: shefu
+name_en: shefu
 description: "🧙 射覆——以《正易心法》五观体系从卦象结构读取气态，渐进精化物品特征画像，辅助玩家自行判断。AI是画师不是鉴定师——刻画特征，命名权交给玩家。"
+description_en: "Shefu — Feature Portrait Oracle based on Zheng Yi Xin Fa. Reads qi dynamics from hexagram structures and progressively refines object feature portraits. The AI paints the portrait, the player names it."
+triggers: ["射覆", "玩射覆", "猜一猜", "帮我猜", "起卦", "测算", "算一算", "帮我算", "问卦"]
 ---
 
 # 射覆 · 特征画像
