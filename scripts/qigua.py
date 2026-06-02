@@ -289,14 +289,24 @@ def dayan_qigua(seed: int = None) -> dict:
     dong_yao = [l["pos"] for l in lines if l["moving"]]
 
     db = load_gua_db()
+    if not db:
+        return {"error": "卦象数据库加载失败", "method": "大衍筮法"}
+
     ben_gua_name = find_gua_by_yao(ben_yao, db)
     bian_gua_name = find_gua_by_yao(bian_yao, db) if dong_yao else None
+
+    if ben_gua_name is None:
+        return {"error": f"无法匹配本卦卦爻 {ben_yao}", "method": "大衍筮法", "lines": lines}
 
     gua_info = db.get(ben_gua_name, {})
     shang_name = gua_info.get("shang", "?")
     xia_name = gua_info.get("xia", "?")
 
-    li = lifa.now_ganzhi()
+    # 历法数据（带异常捕获降级）
+    try:
+        li = lifa.now_ganzhi()
+    except Exception as e:
+        li = {"年干支":"?","月干支":"?","日干支":"?","月建":"?","日支":"?"}
 
     result = {
         "method": "大衍筮法",
@@ -438,9 +448,13 @@ def meihua_qigua(method: str = "time", **kwargs) -> dict:
     ti, yong = meihua_calc_tiyong(ben_gua_info, dongyao)
     relation, relation_desc = meihua_tiyong_relation(ti, yong)
 
+    try:
+        cal = lifa.now_ganzhi()
+    except Exception:
+        cal = {"年干支":"?","月干支":"?","日干支":"?","月建":"?","日支":"?","日干":"?"}
     return {
         "method": desc,
-        "calendar": lifa.now_ganzhi(),
+        "calendar": cal,
         "ben_gua": {
             "name": ben_gua_name,
             "shang": ben_gua_info["shang"], "xia": ben_gua_info["xia"],
@@ -569,7 +583,10 @@ def liuyao_qigua(lines: list = None, seed: int = None) -> dict:
         rng = random.Random(seed) if seed is not None else random
         lines = liuyao_toss_hexagram(rng)
 
-    cal = lifa.now_ganzhi()
+    try:
+        cal = lifa.now_ganzhi()
+    except Exception:
+        cal = {"年干支":"?","月干支":"?","日干支":"?","月建":"?","日支":"?","日干":"?"}
     day_gan = cal["日干"]
     day_zhi = cal["日支"]
 

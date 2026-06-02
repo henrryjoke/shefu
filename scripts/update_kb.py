@@ -41,14 +41,23 @@ PROFILE_WEIGHT_FLOOR = 0.3
 
 def load_json(path):
     """加载 JSON 文件"""
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"  ❌ 文件不存在: {path}")
+        sys.exit(1)
+    except json.JSONDecodeError as e:
+        print(f"  ❌ JSON 解析错误 ({os.path.basename(path)}): {e}")
+        sys.exit(1)
 
 
 def save_json(path, data):
-    """保存 JSON 文件（格式化，保留中文）"""
-    with open(path, "w", encoding="utf-8") as f:
+    """保存 JSON 文件（原子写入：先写临时文件再替换）"""
+    tmp_path = path + ".tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(tmp_path, path)
     print(f"  ✓ 已保存: {os.path.basename(path)}")
 
 
@@ -92,9 +101,9 @@ def find_mapping(kx_db, trigram, dimension):
                 return entry, dim_name
 
     # 遍历现代物品
-    for entry in t.get("modern_objects", []):
+    for entry in t.get("reference_objects", []):
         if fuzzy_match(dimension, entry.get("item", "")) or fuzzy_match(dimension, entry.get("source", "")):
-            return entry, "modern_objects"
+            return entry, "reference_objects"
 
     # 遍历信号组合
     for combo in t.get("signal_combinations", []):
@@ -188,14 +197,14 @@ def update_kx_db(kx_db, round_data):
             print(f"  ⚠️ 未知卦名: {trigram}")
             continue
 
-        # 添加到 modern_objects
+        # 添加到 reference_objects
         new_entry = {
             "item": item_desc or dimension,
             "confidence": NEW_DISCOVERY_INIT,
             "source": f"新发现-第{round_data.get('round', '?')}轮: {item_desc}",
             "validations": 1
         }
-        t.setdefault("modern_objects", []).append(new_entry)
+        t.setdefault("reference_objects", []).append(new_entry)
         changes["new_discoveries"].append({
             "trigram": trigram, "item": item_desc,
             "confidence": NEW_DISCOVERY_INIT
@@ -235,18 +244,33 @@ def update_profile(profile, round_data):
     hit = round_data.get("AI命中", False)
     bg = round_data.get("背景环境", "")
 
-    # ── 品类先验 ──
-    dist = profile.get("品类先验分布", {}).get("distribution", {})
-    if category in dist:
-        dist[category]["count"] = dist[category].get("count", 0) + 1
-        # 更新权重：品类频次越高权重越大
-        total = sum(d.get("count", 0) for d in dist.values()) or 1
-        for cat, d in dist.items():
-            count = d.get("count", 0)
-            # weight = 1.0 + log(count+1) * 0.3, 上限 2.0
-            import math
-            d["weight"] = round(clamp(1.0 + math.log(count + 1) * 0.3, 0.7, 2.0), 2)
-        print(f"  📊 品类分布: {category} count→{dist[category]['count']} weight→{dist[category]['weight']}")
+    # ── 特征维度偏好 ──
+    dim_prefs = profile.get("特征维度偏好", {})
+    for signal in round_data.get("命中信号", []):
+        dim_name = signal.get("维度", "")
+        if dim_name in dim_prefs:
+            old = dim_prefs[dim_name]
+            dim_prefs[dim_name] = round(
+                clamp(old + PROFILE_HIT_BOOST, PROFILE_WEIGHT_FLOOR, PROFILE_WEIGHT_CAP), 2)
+            print(f"  ✅ 维度偏好: {dim_name} {old:.2f} → {dim_prefs[dim_name]:.2f}")
+    
+    for signal in round_data.get("遗漏信号", []):
+        dim_name = signal.get("维度", "")
+        if dim_name in dim_prefs:
+            old = dim_prefs[dim_name]
+            dim_prefs[dim_name] = round(
+                clamp(old + PROFILE_OVERLOOK_BOOST, PROFILE_WEIGHT_FLOOR, PROFILE_WEIGHT_CAP), 2)
+            print(f"  👁 维度偏好: {dim_name} {old:.2f} → {dim_prefs[dim_name]:.2f}")
+    
+    for signal in round_data.get("错误信号", []):
+        dim_name = signal.get("维度", "")
+        if dim_name in dim_prefs:
+            old = dim_prefs[dim_name]
+            dim_prefs[dim_name] = round(
+                clamp(old + PROFILE_MISS_PENALTY, PROFILE_WEIGHT_FLOOR, PROFILE_WEIGHT_CAP), 2)
+            print(f"  ❌ 维度偏好: {dim_name} {old:.2f} → {dim_prefs[dim_name]:.2f}")
+    
+    profile["特征维度偏好"] = dim_prefs
 
     # ── 个人映射权重 ──
     mapping_adj = profile.get("个人映射调整", {})
@@ -283,18 +307,19 @@ def update_profile(profile, round_data):
                     clamp(old + PROFILE_MISS_PENALTY, PROFILE_WEIGHT_FLOOR, PROFILE_WEIGHT_CAP), 2)
                 print(f"  ❌ 映射权重: {trigram}::{matched_key} {old:.2f} → {mapping_adj[trigram][matched_key]:.2f}")
 
-    # ── 背景习惯 ──
+    # ── 场景先验 ──
     if bg:
-        bg_habits = profile.get("背景习惯", {})
-        environments = bg_habits.get("常见环境", [])
-        if environments == ["未记录"] or (bg not in environments and bg != "未记录"):
-            if environments == ["未记录"]:
-                environments = [bg]
-            elif bg not in environments:
-                environments.append(bg)
-                if len(environments) > 5:
-                    environments.pop(0)
-            bg_habits["常见环境"] = environments
+        scene_prior = profile.get("场景先验", {})
+        scenes = scene_prior.get("常见场景", [])
+        if scenes == ["未记录"] or (bg not in scenes and bg != "未记录"):
+            if scenes == ["未记录"]:
+                scenes = [bg]
+            elif bg not in scenes:
+                scenes.append(bg)
+                if len(scenes) > 5:
+                    scenes.pop(0)
+            scene_prior["常见场景"] = scenes
+            profile["场景先验"] = scene_prior
             print(f"  🌍 环境记录: {bg}")
 
     # ── 最近20轮 ──
@@ -315,15 +340,19 @@ def update_profile(profile, round_data):
     stats = profile.get("全局统计", {})
     total = len(recent)
     hits = sum(1 for r in recent if r.get("命中") == True)
-    stats["命中率"] = round(hits / total, 2) if total > 0 else 0.0
+    stats["特征命中率"] = round(hits / total, 2) if total > 0 else 0.0
 
-    # 最多品类
-    cat_counts = {}
+    # 最多命中的卦→特征映射
+    trigram_dim_counts = {}
     for r in recent:
-        c = r.get("品类", "未知")
-        cat_counts[c] = cat_counts.get(c, 0) + 1
-    if cat_counts:
-        stats["最多出现的品类"] = max(cat_counts, key=cat_counts.get)
+        for signal in r.get("命中信号", []):
+            key = f"{signal.get('卦', '')}→{signal.get('维度', '')}"
+            trigram_dim_counts[key] = trigram_dim_counts.get(key, 0) + 1
+    if trigram_dim_counts:
+        stats["最多命中的卦→特征映射"] = max(trigram_dim_counts, key=trigram_dim_counts.get)
+    else:
+        stats["最多命中的卦→特征映射"] = "待累积"
+
     profile["全局统计"] = stats
 
     profile["_meta"]["total_rounds"] = total
@@ -347,18 +376,25 @@ def print_summary(kx_db, profile):
 
     stats = profile.get("全局统计", {})
     if stats:
-        print(f"  命中率: {stats.get('命中率', 0):.0%} | "
-              f"最常见品类: {stats.get('最多出现的品类', '待累积')}")
+        print(f"  特征命中率: {stats.get('特征命中率', 0):.0%} | "
+              f"最多命中映射: {stats.get('最多命中的卦→特征映射', '待累积')}")
 
-    # 品类分布
-    dist = profile.get("品类先验分布", {}).get("distribution", {})
-    if dist:
-        scored = sorted(dist.items(), key=lambda x: x[1].get("count", 0), reverse=True)
-        active = [(cat, d) for cat, d in scored if d.get("count", 0) > 0]
-        if active:
-            print("  品类分布:")
-            for cat, d in active[:5]:
-                print(f"    {cat}: {d['count']}次 (权重={d['weight']})")
+    # 特征维度偏好
+    dim_prefs = profile.get("特征维度偏好", {})
+    if dim_prefs:
+        # 过滤掉 _说明 键
+        prefs = {k: v for k, v in dim_prefs.items() if not k.startswith("_") and isinstance(v, (int, float))}
+        if prefs:
+            print("  特征维度偏好:")
+            for dim_name, weight in sorted(prefs.items(), key=lambda x: x[1], reverse=True):
+                print(f"    {dim_name}: {weight:.2f}")
+
+    # 场景先验
+    scene_prior = profile.get("场景先验", {})
+    if scene_prior:
+        scenes = scene_prior.get("常见场景", [])
+        if scenes and scenes != ["未记录"]:
+            print(f"  常见场景: {', '.join(scenes[:5])}")
 
     # 映射权重调整
     print("\n  映射权重调整 (≠1.0 的):")
@@ -381,7 +417,7 @@ def print_summary(kx_db, profile):
             for e in entries:
                 if e.get("confidence", 0) >= 0.80 and e.get("validations", 0) > 0:
                     items.append(f"{dim_name}={e['value']}({e['confidence']:.2f})")
-        for e in t.get("modern_objects", []):
+        for e in t.get("reference_objects", []):
             if e.get("confidence", 0) >= 0.80 and e.get("validations", 0) > 0:
                 items.append(f"物={e['item']}({e['confidence']:.2f})")
         if items:
