@@ -289,14 +289,29 @@ def dayan_qigua(seed: int = None) -> dict:
     dong_yao = [l["pos"] for l in lines if l["moving"]]
 
     db = load_gua_db()
+    if not db:
+        return {"error": "卦象数据库加载失败", "method": "大衍筮法"}
+
     ben_gua_name = find_gua_by_yao(ben_yao, db)
     bian_gua_name = find_gua_by_yao(bian_yao, db) if dong_yao else None
+
+    if ben_gua_name is None:
+        return {"error": f"无法匹配本卦 {ben_yao}", "method": "大衍筮法", "lines": lines}
 
     gua_info = db.get(ben_gua_name, {})
     shang_name = gua_info.get("shang", "?")
     xia_name = gua_info.get("xia", "?")
 
-    li = lifa.now_ganzhi()
+    # 历法数据（带异常捕获和降级）
+    li = None
+    try:
+        li = lifa.now_ganzhi()
+    except Exception as e:
+        print(f"⚠️ 历法计算失败: {e}，降级为无历法模式", file=sys.stderr)
+        li = {
+            "年干支": "?", "月干支": "?", "日干支": "?",
+            "月建": "?", "日支": "?"
+        }
 
     result = {
         "method": "大衍筮法",
@@ -819,9 +834,19 @@ def main():
         return
 
     if arg == "dayan":
-        seed = int(sys.argv[2]) if len(sys.argv) > 2 else None
+        use_json = len(sys.argv) > 2 and sys.argv[2] == "--json"
+        seed = None
+        if len(sys.argv) > 2 and sys.argv[2] != "--json":
+            try:
+                seed = int(sys.argv[2])
+            except ValueError:
+                print(f"错误: 无效的 seed 参数 '{sys.argv[2]}'", file=sys.stderr)
+                sys.exit(1)
         result = qigua("dayan", seed=seed)
-        print(format_output(result, "dayan"))
+        if use_json:
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        else:
+            print(format_output(result, "dayan"))
 
     elif arg == "meihua":
         if len(sys.argv) < 3:
