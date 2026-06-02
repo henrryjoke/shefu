@@ -28,8 +28,7 @@ import lifa
 from lifa import (BAGUA_PIC, BAGUA_WUXING, BAGUA_YAO, BAGUA_NUM,
                   XIANTIAN, YAO_POS_NAMES, WUXING_SHENGKE,
                   LIUSHEN_ORDER, LIUSHEN_START,
-                  TGAN, DZHI, yao_pic, yao_to_gua, hexagram_view,
-                  HEXAGRAM_UNICODE, hexagram_diagram, hexagram_yao_name)
+                  TGAN, DZHI, yao_pic, yao_to_gua, hexagram_view)
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -290,14 +289,29 @@ def dayan_qigua(seed: int = None) -> dict:
     dong_yao = [l["pos"] for l in lines if l["moving"]]
 
     db = load_gua_db()
+    if not db:
+        return {"error": "卦象数据库加载失败", "method": "大衍筮法"}
+
     ben_gua_name = find_gua_by_yao(ben_yao, db)
     bian_gua_name = find_gua_by_yao(bian_yao, db) if dong_yao else None
+
+    if ben_gua_name is None:
+        return {"error": f"无法匹配本卦 {ben_yao}", "method": "大衍筮法", "lines": lines}
 
     gua_info = db.get(ben_gua_name, {})
     shang_name = gua_info.get("shang", "?")
     xia_name = gua_info.get("xia", "?")
 
-    li = lifa.now_ganzhi()
+    # 历法数据（带异常捕获和降级）
+    li = None
+    try:
+        li = lifa.now_ganzhi()
+    except Exception as e:
+        print(f"⚠️ 历法计算失败: {e}，降级为无历法模式", file=sys.stderr)
+        li = {
+            "年干支": "?", "月干支": "?", "日干支": "?",
+            "月建": "?", "日支": "?"
+        }
 
     result = {
         "method": "大衍筮法",
@@ -700,91 +714,6 @@ def qigua(method: str = "dayan", **kwargs) -> dict:
 
 
 # ═══════════════════════════════════════════════════════════════
-# 表格化汇总渲染
-# ═══════════════════════════════════════════════════════════════
-
-def hexagram_row(gua_name: str) -> str:
-    """表格单行: Unicode卦符 + 卦名"""
-    uc = HEXAGRAM_UNICODE.get(gua_name, "  ")
-    return f"{uc} {gua_name}"
-
-
-def hexagram_summary_table(ben_name: str, ben_shang: str, ben_xia: str,
-                           dongyao_list: list = None,
-                           bian_name: str = None, bian_shang: str = None, bian_xia: str = None,
-                           hu_name: str = None, hu_shang: str = None, hu_xia: str = None,
-                           calendar: dict = None, method: str = "") -> str:
-    """本卦/变卦/互卦 三栏对照表
-
-    示例:
-        ┌──────────┬──────────┬──────────┐
-        │   本卦    │   互卦    │   变卦    │
-        │ ䷟ 雷风恒 │ ䷪ 泽天夬 │ ䷡ 雷天大壮│
-        │ ☳☴ 动1   │ ☱☰      │ ☳☰      │
-        └──────────┴──────────┴──────────┘
-    """
-    dongyao_list = dongyao_list or []
-    lines = []
-
-    lines.append("┌" + "─" * 24 + "┬" + "─" * 24 + "┬" + "─" * 24 + "┐")
-
-    # 标题行
-    headers = ["本卦", "互卦" if hu_name else "变卦", "变卦" if hu_name else "体用"]
-    hdr = "│"
-    for h in headers:
-        hdr += f"{h:^24}│"
-    lines.append(hdr)
-    lines.append("├" + "─" * 24 + "┼" + "─" * 24 + "┼" + "─" * 24 + "┤")
-
-    # 卦名行
-    ben_uc = HEXAGRAM_UNICODE.get(ben_name, "  ")
-    col1 = f" {ben_uc} {ben_name}"
-    if hu_name:
-        hu_uc = HEXAGRAM_UNICODE.get(hu_name, "  ")
-        col2 = f" {hu_uc} {hu_name}"
-    else:
-        col2 = " —"
-    if bian_name:
-        bian_uc = HEXAGRAM_UNICODE.get(bian_name, "  ")
-        col3 = f" {bian_uc} {bian_name}"
-    else:
-        col3 = " —"
-    lines.append(f"│{col1:<24}│{col2:<24}│{col3:<24}│")
-
-    # 上下卦行
-    ben_pic = BAGUA_PIC.get(ben_shang, "?") + BAGUA_PIC.get(ben_xia, "?")
-    col1 = f" {ben_pic} {ben_shang}上{ben_xia}下"
-    if hu_shang and hu_xia:
-        hu_pic = BAGUA_PIC.get(hu_shang, "?") + BAGUA_PIC.get(hu_xia, "?")
-        col2 = f" {hu_pic} {hu_shang}上{hu_xia}下"
-    else:
-        col2 = ""
-    if bian_shang and bian_xia:
-        bian_pic = BAGUA_PIC.get(bian_shang, "?") + BAGUA_PIC.get(bian_xia, "?")
-        col3 = f" {bian_pic} {bian_shang}上{bian_xia}下"
-    else:
-        col3 = ""
-    lines.append(f"│{col1:<24}│{col2:<24}│{col3:<24}│")
-
-    # 动爻行
-    if dongyao_list:
-        dy_str = "动爻: " + ",".join(f"{d}" for d in dongyao_list)
-    else:
-        dy_str = "静卦 (无动爻)"
-    lines.append(f"│{dy_str:<24}│{'':24}│{'':24}│")
-
-    # 历法行
-    if calendar:
-        y = calendar.get("年干支", calendar.get("year", ""))
-        m = calendar.get("月干支", calendar.get("month", ""))
-        cal_str = f"{y}年 {m}月"
-        lines.append(f"│{cal_str:<24}│{'起卦: '+method:<24}│{'':24}│")
-
-    lines.append("└" + "─" * 24 + "┴" + "─" * 24 + "┴" + "─" * 24 + "┘")
-    return "\n".join(lines)
-
-
-# ═══════════════════════════════════════════════════════════════
 # 输出格式化
 # ═══════════════════════════════════════════════════════════════
 
@@ -802,110 +731,81 @@ def format_output(result: dict, method: str = "dayan") -> str:
 
 
 def format_dayan(result: dict) -> str:
-    """大衍筮法格式化输出 — 新版：Unicode卦画 + 结构化"""
     ben = result["ben_gua"]
     dong = result["dong_yao"]
     cal = result["calendar"]
-    method_str = result.get("method", "大衍筮法")
-    method_desc = result.get("method_desc", "")
-
-    lines = []
-
-    # ── 卦画可视化 ──
-    lines.append(hexagram_diagram(
-        ben["yao"],
-        gua_name=ben["name"],
-        shang=ben["shang"],
-        xia=ben["xia"],
-        dongyao_list=dong
-    ))
-
-    # ── 信息摘要 ──
-    lines.append(f"\n  起卦: {method_str} ({method_desc})")
-    lines.append(f"  历法: {cal['year']}年 {cal['month']}月 {cal['day']}日")
-    dong_str = "、".join(f"第{d}爻" for d in dong) if dong else "无 (静卦)"
-    lines.append(f"  动爻: {dong_str}")
+    lines = result["lines"]
+    output = []
+    output.append("=" * 50)
+    output.append(f"起卦方式：{result['method']}（{result['method_desc']}）")
+    output.append(f"历法参照：{cal['year']}年 {cal['month']}月 {cal['day']}日")
+    output.append("-" * 50)
+    output.append(f"本卦：{ben['name']}  {ben['shang_pic']}{ben['xia_pic']}")
+    output.append(f"  上卦 {ben['shang']}({ben['shang_pic']}) / 下卦 {ben['xia']}({ben['xia_pic']})")
 
     if result["bian_gua"]:
         bian = result["bian_gua"]
-        lines.append(f"  变卦: {bian['name']}  {bian.get('shang_pic','')}{bian.get('xia_pic','')}")
-
-    return "\n".join(lines)
+        output.append(f"变卦：{bian['name']}  {bian['shang_pic']}{bian['xia_pic']}")
+    output.append(f"动爻：{'、'.join(f'第{d}爻' for d in dong) if dong else '无（静卦）'}")
+    output.append("-" * 50)
+    output.append("爻位详情（从初到上）：")
+    VALUE_SYMBOLS = {6: "老阴 - - ×", 7: "少阳 ━━━", 8: "少阴 - -", 9: "老阳 ━━━ ○"}
+    for l in lines:
+        pos = l["pos"]
+        symbol = VALUE_SYMBOLS.get(l["value"], "?")
+        status = "→ 动爻" if l["moving"] else "静爻"
+        output.append(f"  {YAO_POS_NAMES[pos]}爻（第{pos}位）: {symbol}  {status}")
+    output.append("=" * 50)
+    return "\n".join(output)
 
 
 def format_meihua(result: dict) -> str:
-    """梅花易数格式化 — 新版：三栏对照表 + 卦画 + 体用"""
+    output = []
     cal = result["calendar"]
+    output.append("=" * 50)
+    output.append(f"起卦方式：梅花易数·{result['method']}")
+    output.append(f"历法参照：{cal['年干支']}年 {cal['月干支']}月 {cal['日干支']}日")
+    output.append("-" * 50)
     b = result["ben_gua"]
+    output.append(f"本卦：{b['name']}  {b['shang_pic']}{b['xia_pic']}（上{b['shang']}下{b['xia']}）")
     h = result["hu_gua"]
+    output.append(f"互卦：{h['name']}  {h['shang_pic']}{h['xia_pic']}")
     bg = result["bian_gua"]
-    dong = result["dong_yao"]
+    output.append(f"变卦：{bg['name']}  {bg['shang_pic']}{bg['xia_pic']}")
+    output.append(f"动爻：第{result['dong_yao']}爻")
     ty = result["ti_yong"]
-
-    lines = []
-
-    # ── 卦画可视化 (本卦) ──
-    lines.append(hexagram_diagram(
-        b["yao"], gua_name=b["name"],
-        shang=b["shang"], xia=b["xia"],
-        dongyao_list=[dong]
-    ))
-    lines.append("")
-
-    # ── 三栏对照表 ──
-    lines.append(hexagram_summary_table(
-        ben_name=b["name"], ben_shang=b["shang"], ben_xia=b["xia"],
-        dongyao_list=[dong],
-        bian_name=bg["name"], bian_shang=bg["shang"], bian_xia=bg["xia"],
-        hu_name=h["name"], hu_shang=h["shang"], hu_xia=h["xia"],
-        calendar=cal, method=result["method"]
-    ))
-
-    # ── 体用 ──
-    lines.append(f"\n  体: {ty['ti']}{ty['ti_pic']} ({ty['ti_wuxing']})  "
-                 f"用: {ty['yong']}{ty['yong_pic']} ({ty['yong_wuxing']})  "
-                 f"→ {ty['relation']} ({ty['relation_desc']})")
-
-    return "\n".join(lines)
+    output.append(f"体用：{ty['ti']}{ty['ti_pic']}（体·{ty['ti_wuxing']}）"
+                  f" / {ty['yong']}{ty['yong_pic']}（用·{ty['yong_wuxing']}）"
+                  f" → {ty['relation']}（{ty['relation_desc']}）")
+    output.append("-" * 50)
+    output.append("卦画：")
+    output.append(result["hexagram_views"]["ben"])
+    output.append("=" * 50)
+    return "\n".join(output)
 
 
 def format_liuyao(result: dict) -> str:
-    """六爻纳甲格式化 — 新版：Unicode卦画 + 纳甲详表"""
+    output = []
+    output.append("=" * 50)
+    output.append(f"起卦方式：六爻纳甲（铜钱摇卦法）")
+    output.append(f"占卜时间：{result['占卜时间']}")
+    output.append(f"历法：{result['年干支']}年 {result['月干支']}月 {result['日干支']}日")
+    output.append("-" * 50)
     b = result["本卦"]
     bg = result["变卦"]
-    changing = result["动爻"]
-
-    lines = []
-
-    # ── 本卦卦画可视化 ──
-    ben_yao = [1 if (d["阴阳"] == "—") else 0 for d in result["爻位详情"]]
-
-    lines.append(hexagram_diagram(
-        ben_yao,
-        gua_name=b["name"],
-        shang=b["shang"], xia=b["xia"],
-        dongyao_list=changing,
-        shi_pos=b["shi"], ying_pos=b["ying"]
-    ))
-
-    # ── 摘要行 ──
-    lines.append(f"\n  起卦: 六爻纳甲 (铜钱摇卦法)")
-    lines.append(f"  时间: {result['占卜时间']}")
-    lines.append(f"  历法: {result['年干支']}年 {result['月干支']}月 {result['日干支']}日")
-    lines.append(f"  本卦: {b['name']} ({b['palace']}宫·{b['wuxing']})  世爻{b['shi']}·应爻{b['ying']}")
-    lines.append(f"  变卦: {bg['name']} ({bg['palace']}宫·{bg['wuxing']})")
-    dong_str = "、".join(str(d) for d in changing) if changing else "无 (静卦)"
-    lines.append(f"  动爻: {dong_str}")
-
-    # ── 纳甲详表 ──
-    lines.append(f"\n  {'位':<3} {'爻':<12} {'纳甲':<6} {'六亲':<6} {'六神':<6} {'世应':<4} {'动变':<4}")
-    lines.append("  " + "-" * 44)
+    output.append(f"本卦：{b['name']}  {b['上卦图']}{b['下卦图']}"
+                  f"（{b['palace']}宫·{b['wuxing']} / 世爻{b['shi']}·应爻{b['ying']}）")
+    output.append(f"变卦：{bg['name']}  {bg['上卦图']}{bg['下卦图']}")
+    output.append(f"动爻：{'、'.join(str(d) for d in result['动爻']) if result['动爻'] else '无（静卦）'}")
+    output.append("-" * 50)
+    HEADER = f"{'位':<3} {'爻':<10} {'纳甲':<6} {'六亲':<6} {'六神':<6} {'世应':<4} {'动变':<4}"
+    output.append(HEADER)
     for d in result["爻位详情"]:
-        row = (f"  {d['pos']:<3} {d['卦画']:<12} {d['纳甲']:<6} "
-               f"{d['六亲']:<6} {d['六神']:<6} {d['世应']:<4} {d['动变']:<4}")
-        lines.append(row)
-
-    return "\n".join(lines)
+        line = (f"{d['pos']:<3} {d['卦画']:<10} {d['纳甲']:<6} "
+                f"{d['六亲']:<6} {d['六神']:<6} {d['世应']:<4} {d['动变']:<4}")
+        output.append(line)
+    output.append("=" * 50)
+    return "\n".join(output)
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -934,9 +834,19 @@ def main():
         return
 
     if arg == "dayan":
-        seed = int(sys.argv[2]) if len(sys.argv) > 2 else None
+        use_json = len(sys.argv) > 2 and sys.argv[2] == "--json"
+        seed = None
+        if len(sys.argv) > 2 and sys.argv[2] != "--json":
+            try:
+                seed = int(sys.argv[2])
+            except ValueError:
+                print(f"错误: 无效的 seed 参数 '{sys.argv[2]}'", file=sys.stderr)
+                sys.exit(1)
         result = qigua("dayan", seed=seed)
-        print(format_output(result, "dayan"))
+        if use_json:
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        else:
+            print(format_output(result, "dayan"))
 
     elif arg == "meihua":
         if len(sys.argv) < 3:
