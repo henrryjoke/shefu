@@ -189,6 +189,14 @@ python scripts/update_kb.py --round-json '{
 
 **推荐从「导读」篇开始阅读。**
 
+### 技能获取
+
+本技能在各平台的名称为：
+- SkillHub → 谛观·射覆｜Shefu Hexagram Analysis
+- ClawHub → 谛观·射覆｜Shefu
+- 虾评 → 谛观·射覆
+- GitHub → henrryjoke/shefu（skill: 射覆 — 正易心法卦脉解读 Skill）
+
 ---
 
 ## 版本
