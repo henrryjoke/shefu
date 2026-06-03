@@ -3,7 +3,7 @@
   "slug": "shefu",
   "description": "「谛观」出品：基于正易心法的卦脉解读技能。默认大衍筮法起卦（模拟蓍草四营十八变），支持梅花易数和六爻纳甲。从卦画结构直接读取气的态势，渐进精化物品特征画像，辅助玩家自行判断。AI是画师不是鉴定师——刻画特征，命名权交给玩家。包含起卦引擎、特征画像、渐进精化、变复校验四层分析链路。不判断吉凶，不替玩家命名。",
   "description_en": "Feature-portrait based hexagram analysis using Zheng Yi Xin Fa. Default Dayan Yarrow Method casting (simulating 49-stalk divination), with Plum Blossom and Six-Yao with Najia as alternatives. Reads qi dynamics from hexagram structures and progressively refines a feature portrait of the hidden object — the AI paints the portrait, the player names it. Four analysis layers: casting, feature extraction, progressive refinement, change-return verification. Does not make fortune-telling verdicts or name objects.",
-  "version": "0.5.4-dev",
+  "version": "0.5.5-dev",
   "homepage": "https://github.com/henrryjoke/shefu",
   "categories": [
     "术数",
