@@ -38,6 +38,26 @@ PROFILE_OVERLOOK_BOOST = 0.03  # 画像遗漏信号增量
 PROFILE_WEIGHT_CAP = 2.0
 PROFILE_WEIGHT_FLOOR = 0.3
 
+# ── 中英维度名映射 ──
+# 类象库.dimensions 使用英文key（material/shape/function/color/body_part）
+# round-json 使用中文key（材质/形态/功能/颜色/结构/尺寸/场态）
+DIMENSION_MAP = {
+    "材质": "material",      "材料": "material",
+    "形态": "shape",         "形状": "shape",
+    "功能": "function",      "功用": "function",       "用途": "function",
+    "颜色": "color",         "色彩": "color",          "色": "color",
+    "结构": "structure",     "内部结构": "structure",
+    "尺寸": "size",          "大小": "size",
+    "场态": "field_state",
+}
+# 非类象库dimensions维度的降级搜索层顺序
+FALLBACK_SEARCH_ORDER = ["signal_combinations", "reference_objects"]
+
+
+def resolve_dimension_key(chinese_dim):
+    """将中文维度名解析为类象库中的英文 key；如果无映射则原样返回"""
+    return DIMENSION_MAP.get(chinese_dim.replace(" ", ""), chinese_dim)
+
 
 def load_json(path):
     """加载 JSON 文件（带异常捕获和降级）"""
@@ -78,51 +98,71 @@ def clamp(value, lo, hi):
     return max(lo, min(hi, value))
 
 
-def find_mapping(kx_db, trigram, dimension):
-    """在类象库中模糊查找指定卦的指定维度映射"""
+def find_mapping(kx_db, trigram, dimension, signal_value=None):
+    """在类象库中查找指定卦的指定维度映射
+
+    策略（按精度递减）：
+      1. 中→英映射定位 dim_key → 遍历该维度下所有 entries
+         a) 优先用 signal_value 精确匹配 entry.value
+         b) 备选：返回第一个 entry
+      2. 全维度扫描（用 signal_value 匹配所有维度 entries）
+      3. 参考物品 / 信号组合匹配
+    """
     if trigram not in kx_db.get("trigrams", {}):
-        return None
+        return None, None
 
     t = kx_db["trigrams"][trigram]
 
-    # 模糊匹配辅助：判断两个字符串是否语义相近
     def fuzzy_match(target, candidate):
         if not target or not candidate:
             return False
-        t = target.replace(" ", "")
-        c = candidate.replace(" ", "")
-        # 直接包含
-        if t in c or c in t:
+        t_str = target.replace(" ", "")
+        c_str = candidate.replace(" ", "")
+        if t_str in c_str or c_str in t_str:
             return True
-        # 关键词拆分匹配（按 / 分隔）
-        target_words = set(t.split("/"))
-        candidate_words = set(c.split("/"))
-        overlap = target_words & candidate_words
-        if overlap:
+        tw = set(t_str.split("/"))
+        cw = set(c_str.split("/"))
+        if tw & cw:
             return True
-        # 部分子串匹配（处理如"金属小件"→"金属"的情况）
-        for tw in target_words:
-            for cw in candidate_words:
-                if tw in cw or cw in tw:
+        for i in tw:
+            for j in cw:
+                if i in j or j in i:
                     return True
         return False
 
-    # 遍历所有维度
-    for dim_name, entries in t.get("dimensions", {}).items():
-        for entry in entries:
-            if fuzzy_match(dimension, entry.get("value", "")):
-                return entry, dim_name
+    dim_data = t.get("dimensions", {})
 
-    # 遍历参考物品
-    for entry in t.get("reference_objects", []):
-        if fuzzy_match(dimension, entry.get("item", "")) or fuzzy_match(dimension, entry.get("source", "")):
-            return entry, "reference_objects"
+    # ── 优先级 1：精确维度查找 ──
+    dim_key = resolve_dimension_key(dimension)
+    if dim_key in dim_data:
+        entries = dim_data[dim_key]
+        # 1a) 优先：用 signal_value 匹配
+        if signal_value:
+            for entry in entries:
+                if fuzzy_match(signal_value, entry.get("value", "")):
+                    return entry, dim_key
+        # 1b) 备选：返回该维度的第一条
+        if entries:
+            return entries[0], dim_key
 
-    # 遍历信号组合
-    for combo in t.get("signal_combinations", []):
-        desc = combo.get("description", "")
-        if fuzzy_match(dimension, desc):
-            return combo, "signal_combinations"
+    # ── 优先级 2：全维度扫描 ──
+    if signal_value:
+        for dim_name, entries in dim_data.items():
+            for entry in entries:
+                if fuzzy_match(signal_value, entry.get("value", "")):
+                    return entry, dim_name
+
+    # ── 优先级 3：参考物品 ──
+    if signal_value:
+        for entry in t.get("reference_objects", []):
+            if fuzzy_match(signal_value, entry.get("item", "")):
+                return entry, "reference_objects"
+
+    # ── 优先级 4：信号组合 ──
+    if signal_value:
+        for combo in t.get("signal_combinations", []):
+            if fuzzy_match(signal_value, combo.get("description", "")):
+                return combo, "signal_combinations"
 
     return None, None
 
@@ -145,10 +185,11 @@ def update_kx_db(kx_db, round_data):
     for signal in round_data.get("命中信号", []):
         trigram = signal.get("卦", "")
         dimension = signal.get("维度", "")
+        signal_value = signal.get("信号", signal.get("item", ""))
         if not trigram or not dimension:
             continue
 
-        entry, dim_name = find_mapping(kx_db, trigram, dimension)
+        entry, dim_name = find_mapping(kx_db, trigram, dimension, signal_value)
         if entry:
             old, new = update_confidence(entry, HIT_INCREMENT)
             if old and new:
@@ -164,10 +205,11 @@ def update_kx_db(kx_db, round_data):
     for signal in round_data.get("遗漏信号", []):
         trigram = signal.get("卦", "")
         dimension = signal.get("维度", "")
+        signal_value = signal.get("信号", signal.get("item", ""))
         if not trigram or not dimension:
             continue
 
-        entry, dim_name = find_mapping(kx_db, trigram, dimension)
+        entry, dim_name = find_mapping(kx_db, trigram, dimension, signal_value)
         if entry:
             old, new = update_confidence(entry, OVERLOOK_INCREMENT)
             if old and new:
@@ -184,10 +226,11 @@ def update_kx_db(kx_db, round_data):
     for signal in round_data.get("错误信号", []):
         trigram = signal.get("卦", "")
         dimension = signal.get("维度", "")
+        signal_value = signal.get("信号", signal.get("item", ""))
         if not trigram or not dimension:
             continue
 
-        entry, dim_name = find_mapping(kx_db, trigram, dimension)
+        entry, dim_name = find_mapping(kx_db, trigram, dimension, signal_value)
         if entry:
             old, new = update_confidence(entry, MISS_DECREMENT, floor=MISS_FLOOR)
             if old and new:
@@ -226,6 +269,8 @@ def update_kx_db(kx_db, round_data):
         print(f"  🆕 新发现: {trigram} → {item_desc} (初始置信度: {NEW_DISCOVERY_INIT})")
 
     # ── 追加验证记录 ──
+    if "validation_log" not in kx_db:
+        kx_db["validation_log"] = []
     kx_db["validation_log"].append({
         "round": round_data.get("round", kx_db.get("_meta", {}).get("total_validations", 0) + 1),
         "本卦": round_data.get("本卦", ""),
