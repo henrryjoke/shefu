@@ -149,6 +149,6 @@ python scripts/update_kb.py --review-pending
 
 ## 版本
 
-v0.8.0-dev — added: 互卦别卦解读法 + 变卦经卦增补规则 + 本卦卦脉德性为纲
+v0.7.1-dev — 月建对互卦经卦的调节机制 + 坎囚存象梗脊 + 震休纸壳茶叶
 
 代码 MIT · 数据 CC BY-NC-SA 4.0 · [GitHub](https://github.com/henrryjoke/shefu)
