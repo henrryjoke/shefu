@@ -149,6 +149,6 @@ python scripts/update_kb.py --review-pending
 
 ## 版本
 
-v0.7.0-dev — 五观→四类规则 + 64卦气脉德性分析 + 旺相休囚死表修正 + 两阶段交互门 + pending_update机制
+v0.8.0-dev — added: 互卦别卦解读法 + 变卦经卦增补规则 + 本卦卦脉德性为纲
 
 代码 MIT · 数据 CC BY-NC-SA 4.0 · [GitHub](https://github.com/henrryjoke/shefu)
